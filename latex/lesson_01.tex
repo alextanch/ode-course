@@ -1,0 +1,812 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage[a4paper,hmargin=2cm,vmargin=1.7cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{array,booktabs}
+\usepackage{enumitem}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+\setlist{nosep,leftmargin=*}
+
+% Заголовок примера
+\newcommand{\example}[1]{\par\medskip\noindent\textbf{#1}\par\nopagebreak\smallskip}
+% Знак вычитания при делении столбиком (приподнят между строками)
+\newcommand{\sub}{\raisebox{1.4ex}{$-$}}
+% Ячейка без вертикальной черты уголка
+\newcommand{\nb}[1]{\multicolumn{1}{r}{#1}}
+% Таблица построения ФСР
+\newenvironment{fsrtable}{\begin{center}\begin{tabular}{@{}lll@{}}\toprule
+Корень & Кратность & Функции ФСР\\\midrule}{\\\bottomrule\end{tabular}\end{center}}
+
+\begin{document}
+
+\begin{center}
+{\Large\bfseries Однородные линейные дифференциальные уравнения\\[2pt] с постоянными коэффициентами. Уравнение Эйлера}
+\end{center}
+
+% =====================================================================
+\section*{Общая схема: уравнение порядка $n$}
+
+\subsection*{Уравнение и характеристическое уравнение}
+
+\[
+  y^{(n)} + a_1 y^{(n-1)} + \dots + a_n y = 0
+  \quad\Rightarrow\quad
+  \lambda^n + a_1\lambda^{n-1} + \dots + a_n = 0
+\]
+
+\subsection*{Фундаментальная система решений (ФСР)}
+
+ФСР уравнения порядка $n$ "--- это $n$ линейно независимых решений $y_1, \dots, y_n$. 
+Общее решение "--- их линейная комбинация:
+\[
+  y = C_1 y_1 + C_2 y_2 + \dots + C_n y_n
+\]
+
+\textbf{Построение ФСР по шагам:}
+
+\begin{enumerate}
+  \item Найти все корни характеристического уравнения и их кратности. Сумма кратностей равна $n$.
+  \item Каждому вещественному корню и каждой комплексной паре сопоставить функции по таблице:
+\end{enumerate}
+
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+Корень & Функции в ФСР & Число функций\\
+\midrule
+вещественный $\lambda$ кратности 1 & $e^{\lambda x}$ & $1$\\
+вещественный $\lambda$ кратности $k$ & $e^{\lambda x},\ x e^{\lambda x},\ \dots,\ x^{k-1}e^{\lambda x}$ & $k$\\
+пара $\alpha \pm i\beta$ кратности 1 & $e^{\alpha x}\cos\beta x,\ e^{\alpha x}\sin\beta x$ & $2$\\
+пара $\alpha \pm i\beta$ кратности $k$ & $x^j e^{\alpha x}\cos\beta x,\ x^j e^{\alpha x}\sin\beta x$, \ $0 \le j \le k-1$ & $2k$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{enumerate}[resume]
+  \item Объединить все функции. Их ровно $n$, и они линейно независимы "--- это ФСР.
+  \item Записать общее решение $y = C_1 y_1 + \dots + C_n y_n$.
+\end{enumerate}
+
+\subsection*{Частный случай: уравнение второго порядка}
+
+При $n = 2$ уравнение $y'' + py' + qy = 0$ имеет характеристическое уравнение $\lambda^2 + p\lambda + q = 0$. Из таблицы остаются три случая:
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+Корни & $y_1$ & $y_2$\\
+\midrule
+$\lambda_1 \ne \lambda_2$ вещественные & $e^{\lambda_1 x}$ & $e^{\lambda_2 x}$\\
+$\lambda_1 = \lambda_2 = \lambda$ (кратность 2) & $e^{\lambda x}$ & $x e^{\lambda x}$\\
+$\lambda_{1,2} = \alpha \pm i\beta$ & $e^{\alpha x}\cos\beta x$ & $e^{\alpha x}\sin\beta x$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+% =====================================================================
+\section*{Задача Коши для уравнения второго порядка}
+
+\subsection*{Постановка}
+
+\[
+  y'' + py' + qy = 0\,, \qquad y(x_0) = y_0\,, \quad y'(x_0) = y_0'
+\]
+
+\subsection*{Алгоритм}
+
+\textbf{1.} Корни характеристического уравнения и ФСР $y_1, y_2$ "--- по таблице для $n = 2$.
+
+\textbf{2.} Общее решение и его производная:
+\[
+  y = C_1 y_1 + C_2 y_2\,, \qquad y' = C_1 y_1' + C_2 y_2'
+\]
+
+\textbf{3.} Подставляем $x = x_0$ и записываем систему для $C_1, C_2$ в матричной форме:
+\[
+  \underbrace{\begin{pmatrix} y_1(x_0) & y_2(x_0) \\ y_1'(x_0) & y_2'(x_0) \end{pmatrix}}_{W(x_0)}
+  \begin{pmatrix} C_1 \\ C_2 \end{pmatrix}
+  =
+  \underbrace{\begin{pmatrix} y_0 \\ y_0' \end{pmatrix}}_{Y_0}
+\]
+$W(x_0)$ "--- матрица Вронского ФСР в точке $x_0$. Так как $y_1, y_2$ линейно независимы, $\det W(x_0) \ne 0$, и матрица обратима:
+\[
+  C = W^{-1}(x_0)\, Y_0
+\]
+
+\textbf{4.} Обратная матрица $2 \times 2$: элементы главной диагонали меняем местами, 
+у побочной меняем знак, делим на определитель:
+\[
+  \begin{pmatrix} a & b \\ c & d \end{pmatrix}^{-1}
+  = \frac{1}{ad - bc}
+  \begin{pmatrix} d & -b \\ -c & a \end{pmatrix}
+\]
+
+\example{Пример 1: простые вещественные корни}
+
+Найти решение задачи Коши:
+\[
+  y'' - y' - 6y = 0\,, \qquad y(0) = 1\,, \qquad y'(0) = 8
+\]
+
+Решение:
+
+Характеристическое уравнение: $\lambda^2 - \lambda - 6 = 0$, то есть $(\lambda - 3)(\lambda + 2) = 0$.
+
+$\lambda_1 = 3$, $\lambda_2 = -2$ "--- простые вещественные корни.
+
+ФСР: $y_1 = e^{3x}$, $y_2 = e^{-2x}$.
+
+Производные:
+\[
+  y_1' = 3 e^{3x}\,, \qquad y_2' = - 2e^{-2x}
+\]
+
+Общее решение:
+\[
+  y = C_1 e^{3x} + C_2 e^{-2x}
+\]
+
+При $x_0 = 0$:
+\[
+  \begin{pmatrix} 1 & 1 \\ 3 & -2 \end{pmatrix}
+  \begin{pmatrix} C_1 \\ C_2 \end{pmatrix}
+  =
+  \begin{pmatrix} 1 \\ 8 \end{pmatrix}
+\]
+
+$\det W = 1 \cdot (-2) - 1 \cdot 3 = -5$
+\[
+  W^{-1} = -\frac15 \begin{pmatrix} -2 & -1 \\ -3 & 1 \end{pmatrix}
+  = \frac15 \begin{pmatrix} 2 & 1 \\ 3 & -1 \end{pmatrix}
+\]
+\[
+  \begin{pmatrix} C_1 \\ C_2 \end{pmatrix}
+  = \frac15 \begin{pmatrix} 2 & 1 \\ 3 & -1 \end{pmatrix} \begin{pmatrix} 1 \\ 8 \end{pmatrix}
+  = \frac15 \begin{pmatrix} 10 \\ -5 \end{pmatrix}
+  = \begin{pmatrix} 2 \\ -1 \end{pmatrix}
+\]
+
+Ответ:
+\[
+  y = 2e^{3x} - e^{-2x}
+\]
+
+\example{Пример 2: комплексно-сопряжённые корни}
+
+Найти решение задачи Коши:
+\[
+  y'' + 2y' + 5y = 0\,, \qquad y(0) = 1\,, \qquad y'(0) = 1
+\]
+
+Решение:
+
+Характеристическое уравнение: $\lambda^2 + 2\lambda + 5 = 0$.
+
+$D = 4 - 20 = -16$, $\lambda_{1,2} = \dfrac{-2 \pm 4i}{2} = -1 \pm 2i$, то есть $\alpha = -1$, $\beta = 2$.
+
+ФСР: $y_1 = e^{-x}\cos 2x$, $y_2 = e^{-x}\sin 2x$.
+
+Производные:
+\[
+  y_1' = -e^{-x}(\cos 2x + 2\sin 2x)\,, \qquad y_2' = e^{-x}(2\cos 2x - \sin 2x)
+\]
+
+Общее решение:
+\[
+  y = e^{-x}(C_1\cos 2x + C_2\sin 2x)
+\]
+
+При $x_0 = 0$: $y_1(0) = 1$, $y_2(0) = 0$, $y_1'(0) = -1$, $y_2'(0) = 2$.
+\[
+  \begin{pmatrix} 1 & 0 \\ -1 & 2 \end{pmatrix}
+  \begin{pmatrix} C_1 \\ C_2 \end{pmatrix}
+  =
+  \begin{pmatrix} 1 \\ 1 \end{pmatrix}
+\]
+
+$\det W = 1 \cdot 2 - 0 \cdot (-1) = 2$
+\[
+  W^{-1} = \frac12 \begin{pmatrix} 2 & 0 \\ 1 & 1 \end{pmatrix}
+\]
+\[
+  \begin{pmatrix} C_1 \\ C_2 \end{pmatrix}
+  = \frac12 \begin{pmatrix} 2 & 0 \\ 1 & 1 \end{pmatrix} \begin{pmatrix} 1 \\ 1 \end{pmatrix}
+  = \frac12 \begin{pmatrix} 2 \\ 2 \end{pmatrix}
+  = \begin{pmatrix} 1 \\ 1 \end{pmatrix}
+\]
+
+Ответ:
+\[
+  y = e^{-x}(\cos 2x + \sin 2x)
+\]
+
+% =====================================================================
+\section*{Общее решение уравнения порядка выше второго}
+
+ФСР строится по общей таблице. Главная трудность "--- найти корни многочлена степени $3$ и выше: угадать целый корень среди делителей свободного члена и разделить столбиком, либо разложить на множители (вынести $\lambda$, разность квадратов, группировка).
+
+\example{Пример 3 (Филиппов № 531): кратный и простой корни}
+
+Найти общее решение уравнения:
+\[
+  y''' - 3y' + 2y = 0
+\]
+
+Решение:
+
+Характеристическое уравнение: $\lambda^3 - 3\lambda + 2 = 0$.
+
+Делители свободного члена: $\pm1, \pm2$. Подходит $\lambda = 1$: $1 - 3 + 2 = 0$.
+
+Делим на $\lambda - 1$ столбиком. Члена с $\lambda^2$ нет, на его место пишем $0 \cdot \lambda^2$:
+\[
+\renewcommand{\arraystretch}{1.25}
+\begin{array}{@{}c@{\,}r@{\;}r@{\;}r@{\;}r|l@{}}
+       & \lambda^3 & +0\lambda^2 & -3\lambda & +2 & \;\lambda - 1\\ \cline{6-6}
+  \sub & \lambda^3 & -\lambda^2  &           & \  & \;\lambda^2 + \lambda - 2\\ \cline{2-3}
+       &           & \lambda^2   & -3\lambda & \nb{}\\
+       &      \sub & \lambda^2   & -\lambda  & \nb{}\\ \cline{3-4}
+       &           &             & -2\lambda & \nb{+2}\\
+       &           &        \sub & -2\lambda & \nb{+2}\\ \cline{4-5}
+       &           &             &           & \nb{0}
+\end{array}
+\]
+\[
+  \lambda^3 - 3\lambda + 2 = (\lambda - 1)(\lambda^2 + \lambda - 2) = (\lambda - 1)^2(\lambda + 2)
+\]
+
+Корни:
+\begin{itemize}
+  \item $\lambda = 1$ "--- кратности 2;
+  \item $\lambda = -2$ "--- простой.
+\end{itemize}
+\vspace{2cm}
+
+Построение ФСР:
+\begin{fsrtable}
+$1$ & $2$ & $y_1 = e^{x}$, \ $y_2 = x e^{x}$\\
+$-2$ & $1$ & $y_3 = e^{-2x}$
+\end{fsrtable}
+
+Всего $2 + 1 = 3$ функции, порядок уравнения 3.
+
+ФСР: $\{e^{x},\ x e^{x},\ e^{-2x}\}$.
+
+Ответ:
+\[
+  y = (C_1 + C_2 x)e^{x} + C_3 e^{-2x}
+\]
+
+\example{Пример 4: вещественные и комплексные корни}
+
+Найти общее решение уравнения:
+\[
+  y^{(4)} - 16y = 0
+\]
+
+Решение:
+
+Характеристическое уравнение: $\lambda^4 - 16 = 0$.
+
+Разность квадратов:
+\[
+  \lambda^4 - 16 = (\lambda^2 - 4)(\lambda^2 + 4) = (\lambda - 2)(\lambda + 2)(\lambda^2 + 4)
+\]
+
+Корни:
+\begin{itemize}
+  \item $\lambda_{1,2} = \pm 2$ "--- простые вещественные;
+  \item $\lambda_{3,4} = \pm 2i$ "--- комплексно-сопряжённые, $\alpha = 0$, $\beta = 2$.
+\end{itemize}
+
+Построение ФСР:
+\begin{fsrtable}
+$2$ & $1$ & $y_1 = e^{2x}$\\
+$-2$ & $1$ & $y_2 = e^{-2x}$\\
+$\pm 2i$ & $1$ & $y_3 = \cos 2x$, \ $y_4 = \sin 2x$
+\end{fsrtable}
+
+Всего $1 + 1 + 2 = 4$ функции, порядок уравнения 4.
+
+ФСР: $\{e^{2x},\ e^{-2x},\ \cos 2x,\ \sin 2x\}$.
+
+Ответ:
+\[
+  y = C_1 e^{2x} + C_2 e^{-2x} + C_3\cos 2x + C_4\sin 2x
+\]
+
+% =====================================================================
+\section*{Уравнение Эйлера второго порядка}
+
+\subsection*{Постановка}
+
+\[
+  x^2 y'' + a x y' + b y = 0\,, \qquad x > 0
+\]
+Коэффициенты $a$, $b$ "--- числа. Степень $x$ при каждой производной равна её порядку.
+
+\subsection*{Алгоритм}
+
+\textbf{1.} Ищем решение в виде степени $y = x^{\lambda}$:
+\[
+  y' = \lambda x^{\lambda-1}\,, \qquad y'' = \lambda(\lambda-1)x^{\lambda-2}
+\]
+
+\textbf{2.} Подставляем и сокращаем на $x^{\lambda}$ "--- получается характеристическое уравнение:
+\[
+  \lambda(\lambda-1) + a\lambda + b = 0
+\]
+
+\textbf{3.} ФСР строится по той же схеме, что для постоянных коэффициентов: вместо $e^{\lambda x}$ пишем $x^{\lambda}$, вместо множителя $x$ "--- множитель $\ln x$.
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+Корни & $y_1$ & $y_2$\\
+\midrule
+$\lambda_1 \ne \lambda_2$ вещественные & $x^{\lambda_1}$ & $x^{\lambda_2}$\\
+$\lambda_1 = \lambda_2 = \lambda$ & $x^{\lambda}$ & $x^{\lambda}\ln x$\\
+$\lambda_{1,2} = \alpha \pm i\beta$ & $x^{\alpha}\cos(\beta\ln x)$ & $x^{\alpha}\sin(\beta\ln x)$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Почему так: замена $x = e^{t}$ превращает уравнение Эйлера в уравнение с постоянными коэффициентами, и $e^{\lambda t} = x^{\lambda}$, $t = \ln x$.
+
+\example{Пример 5}
+
+Найти общее решение уравнения:
+\[
+  x^2 y'' - 2xy' + 2y = 0
+\]
+
+Решение:
+
+Подставляем $y = x^{\lambda}$:
+\[
+  x^2 \cdot \lambda(\lambda-1)x^{\lambda-2} - 2x \cdot \lambda x^{\lambda-1} + 2x^{\lambda} = x^{\lambda}\bigl(\lambda(\lambda-1) - 2\lambda + 2\bigr) = 0
+\]
+
+Характеристическое уравнение: $\lambda^2 - 3\lambda + 2 = 0$, то есть $(\lambda - 1)(\lambda - 2) = 0$.
+
+$\lambda_1 = 1$, $\lambda_2 = 2$ "--- простые вещественные корни.
+
+ФСР: $y_1 = x$, $y_2 = x^2$.
+
+Ответ:
+\[
+  y = C_1 x + C_2 x^2
+\]
+
+\example{Пример 6}
+
+Найти общее решение уравнения:
+\[
+  x^2 y'' - xy' + y = 0
+\]
+
+Решение:
+
+Подставляем $y = x^{\lambda}$ и сокращаем на $x^{\lambda}$:
+\[
+  \lambda(\lambda-1) - \lambda + 1 = 0\,, \qquad \lambda^2 - 2\lambda + 1 = 0\,, \qquad (\lambda - 1)^2 = 0
+\]
+
+$\lambda = 1$ "--- корень кратности 2.
+
+ФСР: $y_1 = x$, $y_2 = x\ln x$ (вместо множителя $x$, как у постоянных коэффициентов, "--- множитель $\ln x$).
+
+Ответ:
+\[
+  y = x(C_1 + C_2\ln x)
+\]
+
+% =====================================================================
+\newpage
+
+\section*{Домашнее задание}
+
+\subsection*{Уравнения второго порядка: задача Коши}
+\begin{itemize}[topsep=2pt]
+  \item \textbf{Краснов № 436} "--- простые вещественные корни \quad\fbox{в книге опечатка}
+  \begin{itemize}
+    \item задача: $y'' - 4y' + 3y = 0$, $y(0) = 6$, $y'(0) = 10$
+    \item ответ: $y = 4e^{x} + 2e^{3x}$
+    \item в книге напечатано $y'' - 4y + 3y = 0$, по ответу книги должно быть $y'' - 4y' + 3y = 0$
+  \end{itemize}
+  \item \textbf{Филиппов № 582} "--- вещественный корень кратности 2
+  \begin{itemize}
+    \item задача: $y'' - 2y' + y = 0$, $y(2) = 1$, $y'(2) = -2$
+    \item ответ: $y = (7 - 3x)e^{x - 2}$
+  \end{itemize}
+  \item \textbf{Краснов № 443} "--- комплексно-сопряжённые корни
+  \begin{itemize}
+    \item задача: $y'' - 2y' + 2y = 0$, $y(0) = 0$, $y'(0) = 1$
+    \item ответ: $y = e^{x}\sin x$
+  \end{itemize}
+\end{itemize}
+
+\subsection*{Уравнения порядка выше второго: общее решение}
+\begin{itemize}[topsep=2pt]
+  \item \textbf{Краснов № 437} "--- простые вещественные корни
+  \begin{itemize}
+    \item уравнение: $y''' + 6y'' + 11y' + 6y = 0$
+    \item ответ: $y = C_1 e^{-x} + C_2 e^{-2x} + C_3 e^{-3x}$
+  \end{itemize}
+  \item \textbf{Краснов № 451} "--- кратный вещественный корень и простой
+  \begin{itemize}
+    \item уравнение: $y''' - 3y' - 2y = 0$
+    \item ответ: $y = (C_1 + C_2 x)e^{-x} + C_3 e^{2x}$
+  \end{itemize}
+\end{itemize}
+
+\subsection*{Уравнение Эйлера}
+\begin{itemize}[topsep=2pt]
+  \item \textbf{Краснов № 618} "--- простые вещественные корни
+  \begin{itemize}
+    \item уравнение: $x^2 y'' + xy' - y = 0$
+    \item ответ: $y = C_1 x + \dfrac{C_2}{x}$
+  \end{itemize}
+  \item \textbf{Краснов № 619} "--- кратный корень
+  \begin{itemize}
+    \item уравнение: $x^2 y'' + 3xy' + y = 0$
+    \item ответ: $y = \dfrac{1}{x}(C_1 + C_2\ln x)$
+  \end{itemize}
+\end{itemize}
+
+% =====================================================================
+\newpage
+
+\section*{Дополнительные примеры}
+
+\example{Пример Д1 (задача Коши, корень кратности 2)}
+
+Найти решение задачи Коши:
+\[
+  y'' - 6y' + 9y = 0\,, \qquad y(0) = 2\,, \qquad y'(0) = 7
+\]
+
+Решение:
+
+Характеристическое уравнение: $\lambda^2 - 6\lambda + 9 = 0$, то есть $(\lambda - 3)^2 = 0$.
+
+$\lambda = 3$ "--- корень кратности 2.
+
+ФСР: $y_1 = e^{3x}$, $y_2 = x e^{3x}$.
+
+Производные: $y_1' = 3e^{3x}$, $y_2' = (1 + 3x)e^{3x}$.
+
+Общее решение и его производная:
+\[
+  y = (C_1 + C_2 x)e^{3x}\,, \qquad y' = (3C_1 + C_2 + 3C_2 x)e^{3x}
+\]
+
+При $x_0 = 0$:
+\[
+  \begin{pmatrix} 1 & 0 \\ 3 & 1 \end{pmatrix}
+  \begin{pmatrix} C_1 \\ C_2 \end{pmatrix}
+  =
+  \begin{pmatrix} 2 \\ 7 \end{pmatrix}
+\]
+
+$\det W = 1 \cdot 1 - 0 \cdot 3 = 1$
+\[
+  W^{-1} = \begin{pmatrix} 1 & 0 \\ -3 & 1 \end{pmatrix}
+\]
+\[
+  \begin{pmatrix} C_1 \\ C_2 \end{pmatrix}
+  = \begin{pmatrix} 1 & 0 \\ -3 & 1 \end{pmatrix} \begin{pmatrix} 2 \\ 7 \end{pmatrix}
+  = \begin{pmatrix} 2 \\ 1 \end{pmatrix}
+\]
+
+Ответ:
+\[
+  y = (2 + x)e^{3x}
+\]
+
+\example{Пример Д2 (задача Коши, корень $\lambda = 0$)}
+
+Найти решение задачи Коши:
+\[
+  y'' + 3y' = 0\,, \qquad y(0) = 2\,, \qquad y'(0) = -3
+\]
+
+Решение:
+
+Характеристическое уравнение: $\lambda^2 + 3\lambda = 0$, то есть $\lambda(\lambda + 3) = 0$.
+
+$\lambda_1 = 0$, $\lambda_2 = -3$ "--- простые вещественные корни.
+
+Корень $\lambda = 0$ даёт решение $e^{0 \cdot x} = 1$, его нельзя терять.
+
+ФСР: $y_1 = 1$, $y_2 = e^{-3x}$.
+
+Общее решение и его производная:
+\[
+  y = C_1 + C_2 e^{-3x}\,, \qquad y' = -3C_2 e^{-3x}
+\]
+
+При $x_0 = 0$:
+\[
+  \begin{pmatrix} 1 & 1 \\ 0 & -3 \end{pmatrix}
+  \begin{pmatrix} C_1 \\ C_2 \end{pmatrix}
+  =
+  \begin{pmatrix} 2 \\ -3 \end{pmatrix}
+\]
+
+$\det W = 1 \cdot (-3) - 1 \cdot 0 = -3$
+\[
+  W^{-1} = -\frac13 \begin{pmatrix} -3 & -1 \\ 0 & 1 \end{pmatrix}
+  = \frac13 \begin{pmatrix} 3 & 1 \\ 0 & -1 \end{pmatrix}
+\]
+\[
+  \begin{pmatrix} C_1 \\ C_2 \end{pmatrix}
+  = \frac13 \begin{pmatrix} 3 & 1 \\ 0 & -1 \end{pmatrix} \begin{pmatrix} 2 \\ -3 \end{pmatrix}
+  = \frac13 \begin{pmatrix} 3 \\ 3 \end{pmatrix}
+  = \begin{pmatrix} 1 \\ 1 \end{pmatrix}
+\]
+
+Ответ:
+\[
+  y = 1 + e^{-3x}
+\]
+
+При $x \to +\infty$ решение стремится к константе $1$.
+
+\example{Пример Д3 (задача Коши в точке $x_0 \ne 0$)}
+
+Найти решение задачи Коши:
+\[
+  y'' + 4y' + 4y = 0\,, \qquad y(1) = 2e^{-2}\,, \qquad y'(1) = -3e^{-2}
+\]
+
+Решение:
+
+Характеристическое уравнение: $\lambda^2 + 4\lambda + 4 = 0$, то есть $(\lambda + 2)^2 = 0$.
+
+$\lambda = -2$ "--- корень кратности 2.
+
+ФСР: $y_1 = e^{-2x}$, $y_2 = x e^{-2x}$.
+
+Производные: $y_1' = -2e^{-2x}$, $y_2' = (1 - 2x)e^{-2x}$.
+
+Общее решение:
+\[
+  y = (C_1 + C_2 x)e^{-2x}
+\]
+
+Начальная точка $x_0 = 1$, поэтому в матрице появляются экспоненты. Общий множитель $e^{-2}$ выносим:
+\[
+  W(1) = \begin{pmatrix} e^{-2} & e^{-2} \\ -2e^{-2} & -e^{-2} \end{pmatrix}
+  = e^{-2} \begin{pmatrix} 1 & 1 \\ -2 & -1 \end{pmatrix}\,,
+  \qquad
+  Y_0 = e^{-2} \begin{pmatrix} 2 \\ -3 \end{pmatrix}
+\]
+
+$\det W(1) = e^{-4}\bigl(1 \cdot (-1) - 1 \cdot (-2)\bigr) = e^{-4}$
+\[
+  W^{-1}(1) = e^{2} \begin{pmatrix} -1 & -1 \\ 2 & 1 \end{pmatrix}
+\]
+\[
+  \begin{pmatrix} C_1 \\ C_2 \end{pmatrix}
+  = e^{2} \begin{pmatrix} -1 & -1 \\ 2 & 1 \end{pmatrix} \cdot e^{-2} \begin{pmatrix} 2 \\ -3 \end{pmatrix}
+  = \begin{pmatrix} -2 + 3 \\ 4 - 3 \end{pmatrix}
+  = \begin{pmatrix} 1 \\ 1 \end{pmatrix}
+\]
+
+Ответ:
+\[
+  y = (1 + x)e^{-2x}
+\]
+
+\example{Пример Д4 (задача Коши, чисто мнимые корни)}
+
+Найти решение задачи Коши:
+\[
+  y'' + 4y = 0\,, \qquad y\!\left(\tfrac{\pi}{4}\right) = 3\,, \qquad y'\!\left(\tfrac{\pi}{4}\right) = 4
+\]
+
+Решение:
+
+Характеристическое уравнение: $\lambda^2 + 4 = 0$.
+
+$\lambda_{1,2} = \pm 2i$, то есть $\alpha = 0$, $\beta = 2$.
+
+ФСР: $y_1 = \cos 2x$, $y_2 = \sin 2x$.
+
+Производные: $y_1' = -2\sin 2x$, $y_2' = 2\cos 2x$.
+
+Общее решение:
+\[
+  y = C_1\cos 2x + C_2\sin 2x
+\]
+
+При $x_0 = \tfrac{\pi}{4}$ имеем $2x_0 = \tfrac{\pi}{2}$: $\cos\tfrac{\pi}{2} = 0$, $\sin\tfrac{\pi}{2} = 1$.
+\[
+  \begin{pmatrix} 0 & 1 \\ -2 & 0 \end{pmatrix}
+  \begin{pmatrix} C_1 \\ C_2 \end{pmatrix}
+  =
+  \begin{pmatrix} 3 \\ 4 \end{pmatrix}
+\]
+
+$\det W = 0 \cdot 0 - 1 \cdot (-2) = 2$
+\[
+  W^{-1} = \frac12 \begin{pmatrix} 0 & -1 \\ 2 & 0 \end{pmatrix}
+\]
+\[
+  \begin{pmatrix} C_1 \\ C_2 \end{pmatrix}
+  = \frac12 \begin{pmatrix} 0 & -1 \\ 2 & 0 \end{pmatrix} \begin{pmatrix} 3 \\ 4 \end{pmatrix}
+  = \frac12 \begin{pmatrix} -4 \\ 6 \end{pmatrix}
+  = \begin{pmatrix} -2 \\ 3 \end{pmatrix}
+\]
+
+Ответ:
+\[
+  y = -2\cos 2x + 3\sin 2x
+\]
+
+При $\alpha = 0$ колебания не затухают.
+
+\example{Пример Д5 (деление столбиком, простые корни)}
+
+Найти общее решение уравнения:
+\[
+  y''' - 6y'' + 11y' - 6y = 0
+\]
+
+Решение:
+
+Характеристическое уравнение: $\lambda^3 - 6\lambda^2 + 11\lambda - 6 = 0$.
+
+Целый корень ищем среди делителей свободного члена $\pm1, \pm2, \pm3, \pm6$: подходит $\lambda = 1$, так как $1 - 6 + 11 - 6 = 0$.
+
+Делим на $\lambda - 1$ столбиком:
+\[
+\renewcommand{\arraystretch}{1.25}
+\begin{array}{@{}c@{\,}r@{\;}r@{\;}r@{\;}r|l@{}}
+       & \lambda^3 & -6\lambda^2 & +11\lambda & -6 & \;\lambda - 1\\ \cline{6-6}
+  \sub & \lambda^3 & -\lambda^2  &            & \  & \;\lambda^2 - 5\lambda + 6\\ \cline{2-3}
+       &           & -5\lambda^2 & +11\lambda & \nb{}\\
+       &      \sub & -5\lambda^2 & +5\lambda  & \nb{}\\ \cline{3-4}
+       &           &             & 6\lambda   & \nb{-6}\\
+       &           &        \sub & 6\lambda   & \nb{-6}\\ \cline{4-5}
+       &           &             &            & \nb{0}
+\end{array}
+\]
+\[
+  \lambda^3 - 6\lambda^2 + 11\lambda - 6 = (\lambda - 1)(\lambda^2 - 5\lambda + 6) = (\lambda - 1)(\lambda - 2)(\lambda - 3)
+\]
+
+$\lambda_1 = 1$, $\lambda_2 = 2$, $\lambda_3 = 3$ "--- простые вещественные корни.
+
+Построение ФСР: каждый простой вещественный корень даёт одну экспоненту.
+\begin{fsrtable}
+$1$ & $1$ & $y_1 = e^{x}$\\
+$2$ & $1$ & $y_2 = e^{2x}$\\
+$3$ & $1$ & $y_3 = e^{3x}$
+\end{fsrtable}
+
+Всего $1 + 1 + 1 = 3$ функции, порядок уравнения 3.
+
+ФСР: $\{e^{x},\ e^{2x},\ e^{3x}\}$.
+
+Ответ:
+\[
+  y = C_1 y_1 + C_2 y_2 + C_3 y_3 = C_1 e^{x} + C_2 e^{2x} + C_3 e^{3x}
+\]
+
+\example{Пример Д6 (корень $\lambda = 0$ кратности 2)}
+
+Найти общее решение уравнения:
+\[
+  y^{(4)} + 2y''' + 5y'' = 0
+\]
+
+Решение:
+
+Характеристическое уравнение: $\lambda^4 + 2\lambda^3 + 5\lambda^2 = 0$.
+
+В уравнении нет $y$ и $y'$, поэтому выносим $\lambda^2$:
+\[
+  \lambda^2(\lambda^2 + 2\lambda + 5) = 0
+\]
+
+Корни:
+\begin{itemize}
+  \item $\lambda = 0$ "--- кратности 2, даёт $1$ и $x$;
+  \item $\lambda^2 + 2\lambda + 5 = 0$: $D = 4 - 20 = -16$, $\lambda = -1 \pm 2i$, то есть $\alpha = -1$, $\beta = 2$.
+\end{itemize}
+
+Построение ФСР: корень $\lambda = 0$ кратности 2 даёт $e^{0 \cdot x} = 1$ и $x \cdot 1 = x$. Паре $-1 \pm 2i$ соответствуют вещественная и мнимая части $e^{(-1 + 2i)x} = e^{-x}(\cos 2x + i\sin 2x)$.
+\begin{fsrtable}
+$0$ & $2$ & $y_1 = 1$, \ $y_2 = x$\\
+$-1 \pm 2i$ & $1$ & $y_3 = e^{-x}\cos 2x$, \ $y_4 = e^{-x}\sin 2x$
+\end{fsrtable}
+
+Всего $2 + 2 = 4$ функции, порядок уравнения 4.
+
+ФСР: $\{1,\ x,\ e^{-x}\cos 2x,\ e^{-x}\sin 2x\}$.
+
+Ответ:
+\[
+  y = C_1 + C_2 x + e^{-x}(C_3\cos 2x + C_4\sin 2x)
+\]
+
+\example{Пример Д7 (группировка)}
+
+Найти общее решение уравнения:
+\[
+  y''' - y'' + 4y' - 4y = 0
+\]
+
+Решение:
+
+Характеристическое уравнение: $\lambda^3 - \lambda^2 + 4\lambda - 4 = 0$.
+
+Группировка:
+\[
+  \lambda^2(\lambda - 1) + 4(\lambda - 1) = (\lambda - 1)(\lambda^2 + 4) = 0
+\]
+
+Корни:
+\begin{itemize}
+  \item $\lambda = 1$ "--- простой вещественный;
+  \item $\lambda = \pm 2i$ "--- комплексно-сопряжённые, $\alpha = 0$, $\beta = 2$.
+\end{itemize}
+
+Построение ФСР: корень $1$ даёт $e^{x}$, паре $\pm 2i$ с $\alpha = 0$ соответствуют $\cos 2x$ и $\sin 2x$.
+\begin{fsrtable}
+$1$ & $1$ & $y_1 = e^{x}$\\
+$\pm 2i$ & $1$ & $y_2 = \cos 2x$, \ $y_3 = \sin 2x$
+\end{fsrtable}
+
+Всего $1 + 2 = 3$ функции, порядок уравнения 3.
+
+ФСР: $\{e^{x},\ \cos 2x,\ \sin 2x\}$.
+
+Ответ:
+\[
+  y = C_1 e^{x} + C_2\cos 2x + C_3\sin 2x
+\]
+
+\example{Пример Д8 (кратные комплексные корни, Филиппов № 530)}
+
+Найти общее решение уравнения:
+\[
+  y^{(5)} + 8y''' + 16y' = 0
+\]
+
+Решение:
+
+Характеристическое уравнение: $\lambda^5 + 8\lambda^3 + 16\lambda = 0$.
+
+Выносим $\lambda$, в скобке полный квадрат:
+\[
+  \lambda(\lambda^4 + 8\lambda^2 + 16) = \lambda(\lambda^2 + 4)^2 = 0
+\]
+
+Корни:
+\begin{itemize}
+  \item $\lambda = 0$ "--- простой, даёт $1$;
+  \item $\lambda = \pm 2i$ "--- комплексно-сопряжённые кратности 2, $\alpha = 0$, $\beta = 2$.
+\end{itemize}
+
+Построение ФСР: корень $\lambda = 0$ даёт $1$. Паре $\pm 2i$ кратности 2 соответствуют $\cos 2x$, $\sin 2x$ и те же функции, умноженные на $x$.
+\begin{fsrtable}
+$0$ & $1$ & $y_1 = 1$\\
+$\pm 2i$ & $2$ & $y_2 = \cos 2x$, \ $y_3 = x\cos 2x$, \ $y_4 = \sin 2x$, \ $y_5 = x\sin 2x$
+\end{fsrtable}
+
+Всего $1 + 4 = 5$ функций, порядок уравнения 5.
+
+ФСР: $\{1,\ \cos 2x,\ x\cos 2x,\ \sin 2x,\ x\sin 2x\}$.
+
+Ответ:
+\[
+  y = C_1 + (C_2 + C_3 x)\cos 2x + (C_4 + C_5 x)\sin 2x
+\]
+
+\end{document}
