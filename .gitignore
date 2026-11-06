@@ -3,3 +3,10 @@
 *.log
 *.gz
 *_latexmk
+
+docs/
+
+.claude/
+.venv/
+
+latex/*.pdf
