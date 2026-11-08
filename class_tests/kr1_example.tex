@@ -1,0 +1,153 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage[a4paper,hmargin=2cm,vmargin=2cm]{geometry}
+\usepackage{amsmath,amssymb}
+% Перенос на новую страницу, если до конца страницы осталось меньше #1 (как в пакете needspace)
+\makeatletter
+\newcommand{\needspace}[1]{\par\penalty-100\begingroup
+  \setlength{\dimen@}{#1}\dimen@ii\pagegoal\advance\dimen@ii-\pagetotal
+  \ifdim\dimen@>\dimen@ii\ifdim\dimen@ii>\z@\vfil\fi\break\fi\endgroup}
+\makeatother
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+\pagestyle{plain}
+
+\newcommand{\task}[2]{\par\needspace{10\baselineskip}\medskip\textbf{Задача #1.} \textit{#2}\par}
+\newcommand{\answer}[1]{\par\smallskip\textbf{Ответ:}\quad\fbox{$\displaystyle #1$}\par}
+
+\begin{document}
+
+% ---------------------------------------------------------------------
+% Условия
+\begin{center}
+{\Large\bfseries Пример контрольной работы №1}\\[2pt]
+{\large по дифференциальным уравнениям}
+\end{center}
+
+\vspace{4pt}
+\begin{flushright}
+Фамилия И.\,О.: \rule{6cm}{0.4pt}\\[8pt]
+Группа: \rule{6cm}{0.4pt}
+\end{flushright}
+
+\vspace{8pt}
+
+\task{1}{Уравнения с разделяющимися переменными}
+Решить задачу Коши:
+\[ y' = 2xy^2, \qquad y(0) = -1. \]
+
+\task{2}{Однородные уравнения}
+Решить дифференциальное уравнение:
+\[ (x + y)\,dx - x\,dy = 0. \]
+
+\task{3}{Уравнение Бернулли}
+Решить дифференциальное уравнение:
+\[ y' + y = x y^2. \]
+
+\task{4}{Уравнения, допускающие понижение порядка}
+Решить дифференциальное уравнение:
+\[ y'' = \frac{1}{\cos^2 x}. \]
+
+\task{5}{Уравнения в полных дифференциалах}
+Проверить, является ли уравнение уравнением в полных дифференциалах, и решить его:
+\[ (2xy + 3x^2)\,dx + (x^2 + 2y)\,dy = 0. \]
+
+\task{6}{Линейные уравнения}
+Решить дифференциальное уравнение:
+\[ y' - \frac{y}{x} = x \sin x. \]
+
+% ---------------------------------------------------------------------
+% Решения
+\newpage
+\begin{center}
+{\Large\bfseries Решения}
+\end{center}
+
+\task{1}{Уравнения с разделяющимися переменными}
+$y' = 2xy^2$, \ $y(0) = -1$.
+
+Разделяем переменные (при $y \ne 0$):
+\[ \frac{dy}{dx} = 2xy^2 \quad\Rightarrow\quad \frac{dy}{y^2} = 2x\,dx. \]
+Интегрируем:
+\[ \int \frac{dy}{y^2} = \int 2x\,dx \quad\Rightarrow\quad -\frac{1}{y} = x^2 + C
+\quad\Rightarrow\quad y = -\frac{1}{x^2 + C}. \]
+Из начального условия $y(0) = -1$:
+\[ -\frac{1}{0 + C} = -1 \quad\Rightarrow\quad C = 1. \]
+\answer{y = -\frac{1}{x^2 + 1}}
+
+\task{2}{Однородные уравнения}
+$(x + y)\,dx - x\,dy = 0$.
+
+Запишем уравнение в виде
+\[ \frac{dy}{dx} = \frac{x + y}{x} = 1 + \frac{y}{x}. \]
+Правая часть зависит только от $y/x$, уравнение однородное. Замена $y = tx$, $y' = t + x t'$:
+\[ t + x\frac{dt}{dx} = 1 + t \quad\Rightarrow\quad x\frac{dt}{dx} = 1. \]
+Разделяем переменные:
+\[ dt = \frac{dx}{x} \quad\Rightarrow\quad t = \ln|x| + C. \]
+Возвращаемся к $t = y/x$:
+\[ \frac{y}{x} = \ln|x| + C. \]
+\answer{y = x(\ln|x| + C)}
+
+\task{3}{Уравнение Бернулли}
+$y' + y = xy^2$.
+
+Это уравнение Бернулли с $n = 2$. При делении теряется решение $y = 0$.
+Замена $z = y^{1-2} = y^{-1}$, тогда $y = z^{-1}$, $y' = -z^{-2} z'$. Подставляем:
+\[ -z^{-2} z' + z^{-1} = x z^{-2}. \]
+Умножим на $-z^2$:
+\[ z' - z = -x. \]
+Это линейное уравнение. Решаем методом вариации постоянной.
+
+Однородное уравнение: $z' - z = 0$, \ $z_0 = Ce^{x}$.
+
+Ищем решение в виде $z = C(x)e^{x}$, тогда $z' = C'e^{x} + Ce^{x}$:
+\[ C'e^{x} + Ce^{x} - Ce^{x} = -x \quad\Rightarrow\quad C' = -x e^{-x}. \]
+Интегрируем по частям:
+\[ C(x) = -\int x e^{-x}\,dx = x e^{-x} + e^{-x} + C_1. \]
+Тогда
+\[ z = (x e^{-x} + e^{-x} + C_1)e^{x} = x + 1 + C_1 e^{x}. \]
+Возвращаемся к $y = 1/z$.
+\answer{y = \frac{1}{x + 1 + Ce^{x}}, \qquad y = 0}
+
+\task{4}{Уравнения, допускающие понижение порядка}
+$y'' = \dfrac{1}{\cos^2 x}$.
+
+Уравнение не содержит $y$ и $y'$ явно. Понижаем порядок заменой $p = y'$:
+\[ p' = \frac{1}{\cos^2 x} \quad\Rightarrow\quad p = \int \frac{dx}{\cos^2 x} = \operatorname{tg} x + C_1. \]
+Так как $p = y'$, интегрируем ещё раз:
+\[ y = \int (\operatorname{tg} x + C_1)\,dx = -\ln|\cos x| + C_1 x + C_2. \]
+\answer{y = -\ln|\cos x| + C_1 x + C_2}
+
+\task{5}{Уравнения в полных дифференциалах}
+$(2xy + 3x^2)\,dx + (x^2 + 2y)\,dy = 0$.
+
+Пусть $P = 2xy + 3x^2$, \ $Q = x^2 + 2y$. Найдём частные производные:
+\[ \frac{\partial P}{\partial y} = 2x, \qquad \frac{\partial Q}{\partial x} = 2x. \]
+Так как $\dfrac{\partial P}{\partial y} = \dfrac{\partial Q}{\partial x}$, это уравнение в полных дифференциалах:
+существует функция $U(x, y)$, для которой $dU = P\,dx + Q\,dy$.
+
+Из $\dfrac{\partial U}{\partial x} = P$:
+\[ U = \int (2xy + 3x^2)\,dx = x^2 y + x^3 + \varphi(y). \]
+Из $\dfrac{\partial U}{\partial y} = Q$:
+\[ x^2 + \varphi'(y) = x^2 + 2y \quad\Rightarrow\quad \varphi'(y) = 2y \quad\Rightarrow\quad \varphi(y) = y^2. \]
+Значит, $U(x, y) = x^2 y + x^3 + y^2$, и общий интеграл $U(x, y) = C$.
+\answer{x^2 y + x^3 + y^2 = C}
+
+\task{6}{Линейные уравнения}
+$y' - \dfrac{y}{x} = x \sin x$.
+
+Это линейное неоднородное уравнение. Решаем методом вариации постоянной.
+
+Однородное уравнение: $y' - \dfrac{y}{x} = 0$. Разделяем переменные:
+\[ \frac{dy}{y} = \frac{dx}{x} \quad\Rightarrow\quad \ln|y| = \ln|x| + \ln|C| \quad\Rightarrow\quad y_0 = Cx. \]
+Ищем решение в виде $y = C(x)\,x$, тогда $y' = C'x + C$. Подставляем:
+\[ C'x + C - \frac{Cx}{x} = x\sin x \quad\Rightarrow\quad C'x = x\sin x \quad\Rightarrow\quad C' = \sin x. \]
+\[ C(x) = -\cos x + C_1. \]
+Общее решение: $y = (C_1 - \cos x)\,x$.
+\answer{y = x(C - \cos x)}
+
+\end{document}

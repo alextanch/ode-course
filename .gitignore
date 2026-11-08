@@ -10,3 +10,8 @@ docs/
 .venv/
 
 latex/*.pdf
+
+latex/quiz_01.tex
+
+latex/lesson_02.tex
+latex/quiz_02.tex
