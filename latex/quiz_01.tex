@@ -1,0 +1,110 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage[a4paper,hmargin=1.5cm,vmargin=1.5cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{array,booktabs}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+\pagestyle{empty}
+
+% Карточка варианта: номер, две задачи
+% Размеры карточки: сетка 2x2 на всю страницу с зазором \cardgap для разрезания
+\newlength{\cardgap}\setlength{\cardgap}{0.4cm}
+\newlength{\cardw}\newlength{\cardh}
+\newcommand{\card}[3]{%
+  \fbox{\begin{minipage}[t][\cardh][t]{\cardw}
+    \vspace{4pt}
+    \textbf{Вариант #1}
+
+    \smallskip
+    Фамилия: \rule{5cm}{0.4pt}
+
+    \medskip
+    Найти общее решение уравнений.
+
+    \medskip
+    \textbf{1.} \ $#2$
+
+    \medskip
+    \textbf{2.} \ $#3$
+  \end{minipage}}}
+
+\begin{document}
+
+% Страница с карточками: поля 5 мм (меньше принтер обычно не пропечатывает)
+\newgeometry{margin=0.5cm}
+\setlength{\cardw}{\dimexpr(\textwidth-\cardgap)/2-2\fboxsep-2\fboxrule\relax}
+\setlength{\cardh}{\dimexpr(\textheight-\cardgap)/2-2\fboxsep-2\fboxrule-2pt\relax}
+
+% ---------------------------------------------------------------------
+% Страница 1: варианты для печати и разрезания
+{\setlength{\parskip}{0pt}\offinterlineskip
+\noindent\card{1}{y''' - 4y'' + 4y' = 0}{x^2 y'' - 2y = 0}\hfill
+\card{2}{y''' + 9y' = 0}{x^2 y'' - 3xy' + 4y = 0}\par
+
+\vspace{\cardgap}
+
+\noindent\card{3}{y''' - 6y'' + 9y' = 0}{x^2 y'' + xy' - 9y = 0}\hfill
+\card{4}{y''' + 4y'' + 5y' = 0}{x^2 y'' + 5xy' + 4y = 0}\par}
+
+\newpage
+\restoregeometry
+% ---------------------------------------------------------------------
+% Страница 2: ответы для преподавателя
+\begin{center}
+{\Large\bfseries Пятиминутка: ответы}
+\end{center}
+
+Проверяет домашнее задание к \texttt{lesson\_01.tex}: общее решение уравнения порядка выше второго и уравнение Эйлера. Время "--- 10 минут.
+
+В каждом варианте задача 1 сводится к вынесению $\lambda$, задача 2 "--- к квадратному уравнению. Типы корней по вариантам:
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{@{}lll@{}}
+\toprule
+Вариант & Задача 1 & Задача 2\\
+\midrule
+1 & $0$ и кратный $2$ & простые $2$, $-1$\\
+2 & $0$ и $\pm 3i$ & кратный $2$\\
+3 & $0$ и кратный $3$ & простые $3$, $-3$\\
+4 & $0$ и $-2 \pm i$ & кратный $-2$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection*{Вариант 1}
+
+\textbf{1.} $\lambda^3 - 4\lambda^2 + 4\lambda = \lambda(\lambda - 2)^2 = 0$ \quad$\Rightarrow$\quad $\displaystyle y = C_1 + (C_2 + C_3 x)e^{2x}$
+
+\textbf{2.} $\lambda(\lambda - 1) - 2 = \lambda^2 - \lambda - 2 = (\lambda - 2)(\lambda + 1) = 0$ \quad$\Rightarrow$\quad $\displaystyle y = C_1 x^2 + \frac{C_2}{x}$
+
+\subsection*{Вариант 2}
+
+\textbf{1.} $\lambda^3 + 9\lambda = \lambda(\lambda^2 + 9) = 0$, \ $\lambda = 0$, $\lambda = \pm 3i$ \quad$\Rightarrow$\quad $\displaystyle y = C_1 + C_2\cos 3x + C_3\sin 3x$
+
+\textbf{2.} $\lambda(\lambda - 1) - 3\lambda + 4 = \lambda^2 - 4\lambda + 4 = (\lambda - 2)^2 = 0$ \quad$\Rightarrow$\quad $\displaystyle y = x^2(C_1 + C_2\ln x)$
+
+\subsection*{Вариант 3}
+
+\textbf{1.} $\lambda^3 - 6\lambda^2 + 9\lambda = \lambda(\lambda - 3)^2 = 0$ \quad$\Rightarrow$\quad $\displaystyle y = C_1 + (C_2 + C_3 x)e^{3x}$
+
+\textbf{2.} $\lambda(\lambda - 1) + \lambda - 9 = \lambda^2 - 9 = (\lambda - 3)(\lambda + 3) = 0$ \quad$\Rightarrow$\quad $\displaystyle y = C_1 x^3 + \frac{C_2}{x^3}$
+
+\subsection*{Вариант 4}
+
+\textbf{1.} $\lambda^3 + 4\lambda^2 + 5\lambda = \lambda(\lambda^2 + 4\lambda + 5) = 0$, \ $D = 16 - 20 = -4$, \ $\lambda = -2 \pm i$ \quad$\Rightarrow$\quad $\displaystyle y = C_1 + e^{-2x}(C_2\cos x + C_3\sin x)$
+
+\textbf{2.} $\lambda(\lambda - 1) + 5\lambda + 4 = \lambda^2 + 4\lambda + 4 = (\lambda + 2)^2 = 0$ \quad$\Rightarrow$\quad $\displaystyle y = \frac{1}{x^2}(C_1 + C_2\ln x)$
+
+\subsection*{Типичные ошибки}
+\begin{itemize}
+  \item Потерян корень $\lambda = 0$, то есть слагаемое $C_1$: в ответе две константы вместо трёх.
+  \item При кратном корне нет множителя $x$ (в задаче 1) или $\ln x$ (в задаче 2).
+  \item В уравнении Эйлера записано $\lambda^2 + a\lambda + b$ вместо $\lambda(\lambda - 1) + a\lambda + b$.
+\end{itemize}
+
+\end{document}
