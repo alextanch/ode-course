@@ -1,0 +1,595 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage[a4paper,hmargin=2cm,vmargin=1.7cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{array,booktabs}
+\usepackage{enumitem}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+\setlist{nosep,leftmargin=*}
+
+% Заголовок примера
+\newcommand{\example}[1]{\par\medskip\noindent\textbf{#1}\par\nopagebreak\smallskip}
+% Общее решение однородного и частное решение неоднородного уравнения
+\newcommand{\yoo}{y_{\text{оо}}}
+\newcommand{\ych}{y_{\text{чн}}}
+
+\begin{document}
+
+\begin{center}
+{\LARGE\bfseries  Линейные дифференциальные уравнения \\[2pt]
+                  со специальной правой частью }
+\end{center}
+
+% =====================================================================
+
+\section*{Линейное неоднородное уравнение (ЛНДУ) порядка $n$ с постоянными коэффициентами
+}
+
+\[
+  y^{(n)} + a_1 y^{(n-1)} + \dots + a_n y = f(x)
+\]
+Если $f(x) \equiv 0$, уравнение однородное (ЛОДУ). Его мы решали на занятии 1.
+
+\textbf{Характеристическое уравнение} строится по однородному уравнению:
+\[
+  y^{(n)} + a_1 y^{(n-1)} + \dots + a_n y = 0
+  \quad\Rightarrow\quad
+  \lambda^n + a_1\lambda^{n-1} + \dots + a_n = 0
+\]
+Его корни дают ФСР по таблице из занятия 1.
+
+\subsection*{Общее решение неоднородного уравнения}
+
+Общее решение неоднородного уравнения "--- сумма общего решения однородного и \textbf{любого одного} частного решения неоднородного:
+\[
+  y = \yoo + \ych\,, \qquad \yoo = C_1 y_1 + \dots + C_n y_n
+\]
+Здесь $y_1, \dots, y_n$ "--- ФСР однородного уравнения. Это верно и для переменных коэффициентов.
+
+% =====================================================================
+\section*{Подбор частного решения по виду правой части}
+
+\subsection*{Правая часть специального вида}
+
+Пусть правая часть имеет вид
+\[
+  f(x) = e^{\alpha x}\bigl(P_n(x)\cos\beta x + Q_l(x)\sin\beta x\bigr)
+\]
+где $P_n$, $Q_l$ "--- многочлены степеней $n$ и $l$ (один из них может быть нулём).
+
+\subsection*{Вид частного решения}
+
+\[
+  \ych(x) = e^{\alpha x}\bigl(R_m(x)\cos\beta x + S_m(x)\sin\beta x\bigr) \cdot x^k
+\]
+где
+\begin{itemize}
+  \item $R_m$, $S_m$ "--- многочлены степени $m = \max(n, l)$ с неизвестными коэффициентами
+  \item если $\lambda = \alpha + i\beta$ корень характеристического уравнения, то $k$ "--- его кратность
+  \item если $\lambda = \alpha + i\beta$ не корень характеристического уравнения, то $k = 0$
+\end{itemize}
+
+\newpage
+
+% \textbf{Важно:} в $\ych$ нужны \textbf{и косинус, и синус}, даже если в $f$ есть только один из них.
+
+% \begin{center}
+% \renewcommand{\arraystretch}{1.3}
+% \begin{tabular}{@{}lll@{}}
+% \toprule
+% Правая часть $f(x)$ & $\lambda$ & Вид $\ych(x)$\\
+% \midrule
+% $e^{\alpha x}\bigl(P_n\cos\beta x + Q_l\sin\beta x\bigr)$ & $\alpha + i\beta$ & $x^k e^{\alpha x}\bigl(R_m\cos\beta x + S_m\sin\beta x\bigr)$\\
+% $P_m(x)$ & $0$ & $x^k R_m(x)$\\
+% $e^{\alpha x}P_m(x)$ & $\alpha$ & $x^k e^{\alpha x}R_m(x)$\\
+% $a\cos\beta x + b\sin\beta x$ & $i\beta$ & $x^k (A\cos\beta x + B\sin\beta x)$\\
+% \bottomrule
+% \end{tabular}
+% \end{center}
+
+\subsection*{Примеры}
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{@{}l l c l@{}}
+\toprule
+$f(x)=$ & $e^{\alpha x}\bigl(P_n(x)\cos\beta x + Q_l(x)\sin\beta x\bigr)$ & $\lambda= \alpha + i\beta$ & $\ych=e^{\alpha x}\bigl(R_m(x)\cos\beta x + S_m(x)\sin\beta x\bigr) \cdot x^k$\\
+\midrule
+$5$ & $e^{0x}\bigl(5\cos 0x + 0\sin 0x\bigr)$ & $0$ & $A \cdot x^k$\\
+$3x - 1$ & $e^{0x}\bigl((3x-1)\cos 0x + 0\sin 0x\bigr)$ & $0$ & $(Ax + B) \cdot x^k$\\
+$x^2 + 1$ & $e^{0x}\bigl((x^2+1)\cos 0x + 0\sin 0x\bigr)$ & $0$ & $(Ax^2 + Bx + C) \cdot x^k$\\
+$e^{2x}$ & $e^{2x}\bigl(1\cos 0x + 0\sin 0x\bigr)$ & $2$ & $Ae^{2x} \cdot x^k$\\
+$xe^{-x}$ & $e^{-1x}\bigl(x\cos 0x + 0\sin 0x\bigr)$ & $-1$ & $(Ax + B)e^{-x} \cdot x^k$\\
+$\cos 2x$ & $e^{0x}\bigl(1\cos 2x + 0\sin 2x\bigr)$ & $2i$ & $(A\cos 2x + B\sin 2x) \cdot x^k$\\
+$e^{x}\cos 2x$ & $e^{1x}\bigl(1\cos 2x + 0\sin 2x\bigr)$ & $1 + 2i$ & $e^{x}(A\cos 2x + B\sin 2x) \cdot x^k$\\
+$x\sin x$ & $e^{0x}\bigl(0\cos 1x + x\sin 1x\bigr)$ & $i$ & $\bigl[(Ax + B)\cos x + (Cx + D)\sin x\bigr] \cdot x^k$\\
+$x^2e^{-x}\sin 3x$ & $e^{-1x}\bigl(0\cos 3x + x^2\sin 3x\bigr)$ & $-1 + 3i$ & $e^{-x}\bigl(R_2\cos 3x + S_2\sin 3x\bigr) \cdot x^k$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection*{Полезные формулы}
+
+\[
+  \left(u\, e^{\alpha x}\right)' = (u' + \alpha u)\, e^{\alpha x}\,, \qquad
+  \left(u\, e^{\alpha x}\right)'' = (u'' + 2\alpha u' + \alpha^2 u)\, e^{\alpha x}
+\]
+
+% =====================================================================
+\section*{Задачи}
+
+\medskip\hrule\medskip
+
+\example{Пример 1}
+
+Найти общее решение уравнения
+\[
+  y'' + y = 4x e^{x}
+\]
+
+Решение:
+
+\textbf{1.} $\lambda^2 + 1 = 0$, \ $\lambda_{1,2} = \pm i$:
+\[
+  \yoo = C_1\cos x + C_2\sin x
+\]
+
+\textbf{2.} $f = 4x\, e^{x}$: многочлен степени $1$, \ $\lambda = \alpha + i\beta=1$. Среди корней $\pm i$ числа $1$ нет, $k = 0$.
+
+\textbf{3.} $\ych = (Ax + B)\, e^{x}$.
+
+\textbf{4.} По формулам с $u = Ax + B$, $\alpha = 1$: \ $u' = A$, $u'' = 0$:
+\[
+  \ych'' = (u'' + 2u' + u)\, e^{x} = (Ax + 2A + B)\, e^{x}
+\]
+\[
+  \ych'' + \ych = (2Ax + 2A + 2B)\, e^{x} = 4x\, e^{x}
+\]
+Сокращаем на $e^{x}$ и приравниваем коэффициенты:
+\[
+  x^1:\ 2A = 4\,, \qquad x^0:\ 2A + 2B = 0
+  \quad\Rightarrow\quad
+  A = 2\,, \quad B = -2
+\]
+$\ych = (2x - 2)\, e^{x}$.
+
+Ответ:
+\[
+  y = C_1\cos x + C_2\sin x + (2x - 2)\, e^{x}
+\]
+
+\example{Задача 1}
+
+Найти общее решение уравнения
+\[
+  y'' - 5y' + 6y = (12x - 7)\, e^{-x}
+\]
+
+Ответ: $y = C_1 e^{2x} + C_2 e^{3x} + x e^{-x}$.
+
+\section*{Принцип суперпозиции}
+
+Если правая часть "--- сумма $f = f_1 + f_2$, и $y_{1}$ "--- частное решение с правой частью $f_1$, а $y_{2}$ "--- с правой частью $f_2$, то
+\[
+  \ych = y_{1} + y_{2}
+\]
+Частные решения для каждого слагаемого ищут отдельно и складывают.
+
+\medskip\hrule\medskip
+
+\example{Пример 2}
+
+Найти общее решение уравнения
+\[
+  y'' - 3y' = 18x - 10\cos x
+\]
+
+Решение:
+
+\textbf{1.} $\lambda^2 - 3\lambda = 0$, \ $\lambda_1 = 0$, $\lambda_2 = 3$:
+\[
+  \yoo = C_1 + C_2 e^{3x}
+\]
+
+\textbf{2.} Правая часть "--- сумма двух слагаемых разного вида, ищем $\ych = y_1 + y_2$:
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{@{}llll@{}}
+\toprule
+Слагаемое & $\lambda$ & $k$ & Вид\\
+\midrule
+$f_1 = 18x$ & $0$ & $1$ (корень $\lambda_1 = 0$) & $y_1 = x(Ax + B)$\\
+$f_2 = -10\cos x$ & $i$ & $0$ & $y_2 = M\cos x + N\sin x$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{3.} Первое слагаемое: $y_1 = Ax^2 + Bx$, \ $y_1' = 2Ax + B$, \ $y_1'' = 2A$:
+\[
+  y_1'' - 3y_1' = -6Ax + 2A - 3B = 18x
+\]
+\[
+  x^1:\ -6A = 18\,, \qquad x^0:\ 2A - 3B = 0
+  \quad\Rightarrow\quad
+  A = -3\,, \quad B = -2
+\]
+$y_1 = -3x^2 - 2x$.
+
+\textbf{4.} Второе слагаемое: $y_2' = -M\sin x + N\cos x$, \ $y_2'' = -y_2$:
+\[
+  y_2'' - 3y_2' = (-M - 3N)\cos x + (3M - N)\sin x = -10\cos x
+\]
+\[
+  \cos x:\ -M - 3N = -10\,, \qquad \sin x:\ 3M - N = 0
+  \quad\Rightarrow\quad
+  M = 1\,, \quad N = 3
+\]
+$y_2 = \cos x + 3\sin x$.
+
+\textbf{5.} $\ych = y_1 + y_2$.
+
+Ответ:
+\[
+  y = C_1 + C_2 e^{3x} - 3x^2 - 2x + \cos x + 3\sin x
+\]
+
+\example{Задача 2}
+
+Найти общее решение уравнения
+\[
+  y'' - y = 2e^{x} - x^2
+\]
+
+Ответ: $y = C_1 e^{x} + C_2 e^{-x} + x e^{x} + x^2 + 2$.
+
+\medskip\hrule\medskip
+
+\example{Пример 3}
+
+Найти общее решение уравнения
+\[
+  y'' + y' - 2y = 3x e^{x}
+\]
+
+Решение:
+
+\textbf{1.} $\lambda^2 + \lambda - 2 = 0$, \ $\lambda_1 = 1$, $\lambda_2 = -2$:
+\[
+  \yoo = C_1 e^{x} + C_2 e^{-2x}
+\]
+
+\textbf{2.} $f = 3x\, e^{x}$: многочлен степени $1$, \ $\lambda = 1$. Это простой корень, $k = 1$.
+
+\textbf{3.} $\ych = x(Ax + B)\, e^{x} = (Ax^2 + Bx)\, e^{x}$.
+
+\textbf{4.} $u = Ax^2 + Bx$, \ $u' = 2Ax + B$, \ $u'' = 2A$, \ $\alpha = 1$:
+\[
+  \ych' = (u' + u)\, e^{x}\,, \qquad \ych'' = (u'' + 2u' + u)\, e^{x}
+\]
+\[
+  \ych'' + \ych' - 2\ych = \bigl(u'' + 3u' + (1 + 1 - 2)\,u\bigr)\, e^{x} = (u'' + 3u')\, e^{x}
+\]
+Подставляем $u$:
+\[
+  2A + 3(2Ax + B) = 6Ax + 2A + 3B = 3x
+\]
+\[
+  x^1:\ 6A = 3\,, \qquad x^0:\ 2A + 3B = 0
+  \quad\Rightarrow\quad
+  A = \frac12\,, \quad B = -\frac13
+\]
+$\ych = \left(\dfrac{x^2}{2} - \dfrac{x}{3}\right) e^{x}$.
+
+Ответ:
+\[
+  y = C_1 e^{x} + C_2 e^{-2x} + \left(\frac{x^2}{2} - \frac{x}{3}\right) e^{x}
+\]
+
+\example{Задача 3}
+
+Найти общее решение уравнения
+\[
+  y'' + y' = e^{-x}
+\]
+
+Ответ: $y = C_1 + C_2 e^{-x} - x e^{-x}$.
+
+\medskip\hrule\medskip
+
+\example{Пример 4}
+
+Найти общее решение уравнения
+\[
+  y'' + y = 4\sin x
+\]
+
+Решение:
+
+\textbf{1.} $\lambda_{1,2} = \pm i$:
+\[
+  \yoo = C_1\cos x + C_2\sin x
+\]
+
+\textbf{2.} $f = 4\sin x$: \ $\alpha = 0$, $\beta = 1$, \ $\lambda = i$. Это корень, $k = 1$.
+
+\textbf{3.} Берём и косинус, и синус:
+\[
+  \ych = x\, v\,, \qquad v = A\cos x + B\sin x
+\]
+
+\textbf{4.} Заметим, что $v'' = -v$. Тогда
+\[
+  \ych' = v + x v'\,, \qquad \ych'' = 2v' + x v'' = 2v' - x v
+\]
+\[
+  \ych'' + \ych = 2v' = -2A\sin x + 2B\cos x = 4\sin x
+\]
+\[
+  \sin x:\ -2A = 4\,, \qquad \cos x:\ 2B = 0
+  \quad\Rightarrow\quad
+  A = -2\,, \quad B = 0
+\]
+$\ych = -2x\cos x$.
+
+Ответ:
+\[
+  y = C_1\cos x + C_2\sin x - 2x\cos x
+\]
+
+\example{Задача 4}
+
+Найти общее решение уравнения
+\[
+  y'' + y = 2\cos x
+\]
+
+Ответ: $y = C_1\cos x + C_2\sin x + x\sin x$.
+
+
+% =====================================================================
+\newpage
+
+\section*{Решения задач 1--4}
+
+\example{Задача 1}
+
+$y'' - 5y' + 6y = (12x - 7)\, e^{-x}$.
+
+\textbf{1.} $\lambda^2 - 5\lambda + 6 = 0$, \ $\lambda_1 = 2$, $\lambda_2 = 3$: \ $\yoo = C_1 e^{2x} + C_2 e^{3x}$.
+
+\textbf{2.} $\lambda = -1$, не корень, $k = 0$.
+
+\textbf{3.} $\ych = (Ax + B)\, e^{-x}$.
+
+\textbf{4.} $u = Ax + B$, $\alpha = -1$:
+\[
+  \ych' = (u' - u)\, e^{-x}\,, \qquad \ych'' = (u'' - 2u' + u)\, e^{-x}
+\]
+\[
+  \ych'' - 5\ych' + 6\ych = (u'' - 7u' + 12u)\, e^{-x} = (12Ax - 7A + 12B)\, e^{-x}
+\]
+\[
+  x^1:\ 12A = 12\,, \qquad x^0:\ -7A + 12B = -7
+  \quad\Rightarrow\quad
+  A = 1\,, \quad B = 0
+\]
+
+Ответ: $y = C_1 e^{2x} + C_2 e^{3x} + x e^{-x}$.
+
+\example{Задача 2}
+
+$y'' - y = 2e^{x} - x^2$.
+
+\textbf{1.} $\lambda_{1,2} = \pm 1$: \ $\yoo = C_1 e^{x} + C_2 e^{-x}$.
+
+\textbf{2.} Суперпозиция:
+\begin{itemize}
+  \item $f_1 = 2e^{x}$: \ $\lambda = 1$ "--- корень, $k = 1$, \ $y_1 = Ax\, e^{x}$;
+  \item $f_2 = -x^2$: \ $\lambda = 0$ "--- не корень, $k = 0$, \ $y_2 = Mx^2 + Nx + K$.
+\end{itemize}
+
+\textbf{3.} $u = Ax$, $\alpha = 1$:
+\[
+  y_1'' - y_1 = \bigl((u'' + 2u' + u) - u\bigr)\, e^{x} = 2A\, e^{x} = 2e^{x}
+  \quad\Rightarrow\quad A = 1
+\]
+
+\textbf{4.} $y_2'' - y_2 = 2M - Mx^2 - Nx - K = -x^2$:
+\[
+  x^2:\ -M = -1\,, \quad x^1:\ -N = 0\,, \quad x^0:\ 2M - K = 0
+  \quad\Rightarrow\quad
+  M = 1\,, \quad N = 0\,, \quad K = 2
+\]
+
+Ответ: $y = C_1 e^{x} + C_2 e^{-x} + x e^{x} + x^2 + 2$.
+
+\example{Задача 3}
+
+$y'' + y' = e^{-x}$.
+
+\textbf{1.} $\lambda^2 + \lambda = 0$, \ $\lambda_1 = 0$, $\lambda_2 = -1$: \ $\yoo = C_1 + C_2 e^{-x}$.
+
+\textbf{2.} $\lambda = -1$ "--- простой корень, $k = 1$.
+
+\textbf{3.} $\ych = Ax\, e^{-x}$.
+
+\textbf{4.} $u = Ax$, $\alpha = -1$:
+\[
+  \ych'' + \ych' = \bigl((u'' - 2u' + u) + (u' - u)\bigr)\, e^{-x} = (u'' - u')\, e^{-x} = -A\, e^{-x} = e^{-x}
+  \quad\Rightarrow\quad A = -1
+\]
+
+Ответ: $y = C_1 + C_2 e^{-x} - x e^{-x}$.
+
+\example{Задача 4}
+
+$y'' + y = 2\cos x$.
+
+\textbf{1.} $\lambda_{1,2} = \pm i$: \ $\yoo = C_1\cos x + C_2\sin x$.
+
+\textbf{2.} $\lambda = i$ "--- корень, $k = 1$.
+
+\textbf{3.} $\ych = x v$, \ $v = A\cos x + B\sin x$.
+
+\textbf{4.} Как в примере 3:
+\[
+  \ych'' + \ych = 2v' = -2A\sin x + 2B\cos x = 2\cos x
+  \quad\Rightarrow\quad A = 0\,, \quad B = 1
+\]
+
+Ответ: $y = C_1\cos x + C_2\sin x + x\sin x$.
+
+
+% =====================================================================
+\newpage
+
+\section*{Домашнее задание}
+
+\subsection*{Общее решение}
+\begin{itemize}[topsep=2pt]
+  \item \textbf{Филиппов № 533}
+  \begin{itemize}
+    \item уравнение: $y'' - 2y' - 3y = e^{4x}$
+    \item ответ: $y = C_1 e^{-x} + C_2 e^{3x} + \dfrac15\, e^{4x}$
+  \end{itemize}
+  \item \textbf{Филиппов № 537}
+  \begin{itemize}
+    \item уравнение: $y'' - 3y' + 2y = \sin x$
+    \item ответ: $y = C_1 e^{x} + C_2 e^{2x} + 0{,}1\sin x + 0{,}3\cos x$
+  \end{itemize}
+\end{itemize}
+
+\subsection*{Вид частного решения (коэффициенты не находить)}
+\begin{itemize}[topsep=2pt]
+  \item \textbf{Краснов № 552}
+  \begin{itemize}
+    \item уравнение: $y'' + 4y' = x + e^{-4x}$
+    \item ответ: $\ych = x(A_1 x + A_2) + B x e^{-4x}$
+  \end{itemize}
+  \item \textbf{Краснов № 554}
+  \begin{itemize}
+    \item уравнение: $y'' - 2y' + 2y = (1 + \sin x)\, e^{x}$
+    \item ответ: $\ych = A e^{x} + x e^{x}(B_1\cos x + B_2\sin x)$
+  \end{itemize}
+\end{itemize}
+
+% =====================================================================
+\newpage
+
+\section*{Дополнительные примеры}
+
+\example{Пример Д1 ($\lambda$ "--- корень кратности 2)}
+
+Найти общее решение уравнения
+\[
+  y'' - 2y' + y = 6x e^{x}
+\]
+
+Решение:
+
+\textbf{1.} $(\lambda - 1)^2 = 0$, \ $\lambda_1 = \lambda_2 = 1$:
+\[
+  \yoo = (C_1 + C_2 x)\, e^{x}
+\]
+
+\textbf{2.} $\lambda = 1$ "--- корень кратности 2, $k = 2$.
+
+\textbf{3.} $\ych = x^2(Ax + B)\, e^{x} = (Ax^3 + Bx^2)\, e^{x}$.
+
+\textbf{4.} По формулам с $\alpha = 1$:
+\[
+  \ych'' - 2\ych' + \ych = \bigl((u'' + 2u' + u) - 2(u' + u) + u\bigr)\, e^{x} = u''\, e^{x}
+\]
+Пропали и $u$, и $u'$. Остаётся
+\[
+  u'' = 6Ax + 2B = 6x
+  \quad\Rightarrow\quad
+  A = 1\,, \quad B = 0
+\]
+$\ych = x^3 e^{x}$.
+
+Ответ:
+\[
+  y = (C_1 + C_2 x + x^3)\, e^{x}
+\]
+
+\example{Пример Д2 (многочлен на косинус)}
+
+Найти общее решение уравнения
+\[
+  y'' - 3y' + 2y = x\cos x
+\]
+
+Решение:
+
+\textbf{1.} $\lambda_1 = 1$, $\lambda_2 = 2$:
+\[
+  \yoo = C_1 e^{x} + C_2 e^{2x}
+\]
+
+\textbf{2.} $f = x\cos x$: \ $\lambda = i$, не корень, $k = 0$. Степень многочлена $1$.
+
+\textbf{3.} Многочлены первой степени и при косинусе, и при синусе:
+\[
+  \ych = P\cos x + Q\sin x\,, \qquad P = Ax + B\,, \quad Q = Cx + D
+\]
+
+\textbf{4.} Так как $P'' = Q'' = 0$:
+\[
+  \ych' = (P' + Q)\cos x + (Q' - P)\sin x\,, \qquad
+  \ych'' = (2Q' - P)\cos x + (-2P' - Q)\sin x
+\]
+\[
+\begin{aligned}
+  \ych'' - 3\ych' + 2\ych
+  &= \bigl(P - 3Q + 2Q' - 3P'\bigr)\cos x + \bigl(3P + Q - 2P' - 3Q'\bigr)\sin x\\
+  &= \bigl((A - 3C)x + B - 3D + 2C - 3A\bigr)\cos x + \bigl((3A + C)x + 3B + D - 2A - 3C\bigr)\sin x
+\end{aligned}
+\]
+Приравниваем к $x\cos x$. Сначала коэффициенты при $x\cos x$ и $x\sin x$:
+\[
+  A - 3C = 1\,, \quad 3A + C = 0
+  \quad\Rightarrow\quad
+  A = \frac{1}{10}\,, \quad C = -\frac{3}{10}
+\]
+Затем при $\cos x$ и $\sin x$:
+\[
+  B - 3D = 3A - 2C = \frac{9}{10}\,, \quad 3B + D = 2A + 3C = -\frac{7}{10}
+  \quad\Rightarrow\quad
+  B = -\frac{3}{25}\,, \quad D = -\frac{17}{50}
+\]
+
+Ответ:
+\[
+  y = C_1 e^{x} + C_2 e^{2x} + (0{,}1x - 0{,}12)\cos x - (0{,}3x + 0{,}34)\sin x
+\]
+
+\example{Пример Д3 (третий порядок, только вид)}
+
+Написать вид частного решения уравнения (коэффициенты не находить):
+\[
+  y''' + y' = \sin x + x\cos x
+\]
+
+Решение:
+
+\textbf{1.} $\lambda^3 + \lambda = \lambda(\lambda^2 + 1) = 0$: \ $\lambda_1 = 0$, \ $\lambda_{2,3} = \pm i$.
+
+\textbf{2.} Оба слагаемых имеют $\lambda = i$, поэтому суперпозиция не нужна: это одна правая часть $e^{0 \cdot x}(x\cos x + 1 \cdot \sin x)$, \ $n = 1$, $l = 0$, \ $m = \max(1, 0) = 1$.
+
+\textbf{3.} $\lambda = i$ "--- простой корень, $k = 1$.
+
+Ответ:
+\[
+  \ych = x\bigl((Ax + B)\cos x + (Cx + D)\sin x\bigr)
+\]
+Проверка подстановкой даёт $A = -\frac14$, $B = C = 0$, $D = \frac14$.
+
+
+\end{document}
