@@ -10,5 +10,9 @@ docs/
 .venv/
 
 latex/*.pdf
-latex/quiz_02.tex
-latex/quiz_03.tex
+
+latex/lesson_04.tex
+latex/lesson_05.tex
+
+latex/quiz_*
+latex/kr2_*
