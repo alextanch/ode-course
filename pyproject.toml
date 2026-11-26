@@ -8,3 +8,8 @@ dependencies = [
     "notebook>=7.6.4",
     "sympy>=1.14.0",
 ]
+
+[dependency-groups]
+dev = [
+    "debugpy>=1.8.22",
+]
