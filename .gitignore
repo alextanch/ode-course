@@ -11,9 +11,12 @@ docs/
 
 latex/*.pdf
 
-latex/lesson_04.tex
 latex/lesson_05.tex
 latex/lesson_06.tex
 
 latex/quiz_*
 latex/kr2_*
+
+!latex/quiz_01.tex
+!latex/quiz_02.tex
+!latex/quiz_03.tex

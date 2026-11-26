@@ -1,0 +1,671 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage[a4paper,hmargin=2cm,vmargin=1.7cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{array,booktabs}
+\usepackage{enumitem}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+\setlist{nosep,leftmargin=*}
+
+% Заголовок примера
+\newcommand{\example}[1]{\par\medskip\noindent\textbf{#1}\par\nopagebreak\smallskip}
+% Общее решение однородного и частное решение неоднородного уравнения
+\newcommand{\yoo}{y_{\text{оо}}}
+\newcommand{\ych}{y_{\text{чн}}}
+% Тангенс и котангенс в русской записи
+\newcommand{\tgn}{\operatorname{tg}}
+\newcommand{\ctgn}{\operatorname{ctg}}
+
+\begin{document}
+
+\begin{center}
+{\LARGE\bfseries  Линейные неоднородные дифференциальные \\[2pt]
+                  уравнения: метод вариации постоянных }
+\end{center}
+
+% =====================================================================
+
+\section*{Когда подбор не работает}
+
+На занятии 3 частное решение подбиралось для правой части вида $e^{\alpha x}\bigl(P_n(x)\cos\beta x + Q_l(x)\sin\beta x\bigr)$. Для других правых частей, например $\dfrac{1}{\sin x}$, \ $\dfrac{e^{x}}{x}$, \ $\tgn x$, \ $\dfrac{1}{e^{x} + 1}$, этот способ не подходит. Тогда применяют метод вариации постоянных: ему нужна только ФСР однородного уравнения.
+
+% =====================================================================
+\section*{Метод вариации постоянных}
+
+Рассмотрим линейное неоднородное уравнение второго порядка
+\[
+  y'' + a_1 y' + a_2 y = f(x).
+\]
+Пусть $y_1$ и $y_2$ --- ФСР соответствующего однородного уравнения. Тогда его общее решение имеет вид
+\[
+  \yoo = C_1 y_1 + C_2 y_2,
+\]
+где $C_1,C_2$ --- постоянные. 
+
+В методе вариации постоянных ищем частное решение неоднородного уравнения в виде
+\[
+  \ych = u_1(x)y_1(x) + u_2(x)y_2(x),
+\]
+то есть заменяем постоянные $C_1,C_2$ неизвестными функциями $u_1,u_2$.
+
+Если $u_1(x)$ и $u_2(x)$ удовлетворяют условиям:
+
+\[
+  \begin{cases}
+    u_1'y_1 + u_2'y_2 = 0,\\
+    u_1'y_1' + u_2'y_2' = f
+  \end{cases}
+  \quad\Longleftrightarrow\quad
+  \begin{pmatrix} y_1 & y_2 \\ y_1' & y_2' \end{pmatrix}
+  \begin{pmatrix} u_1' \\ u_2' \end{pmatrix}
+  = \begin{pmatrix} 0 \\ f \end{pmatrix}
+\]
+
+то можно проверить, что $\ych$ действительно будет частным решением неоднородного уравнения:
+\[
+  \ych'' + a_1 \ych' + a_2 \ych = f(x)
+\]
+
+а значит общим решением неоднородного уравнения будет:
+\[
+  y = \yoo + \ych = C_1 y_1 + C_2 y_2 + u_1y_1 + u_2y_2
+\] 
+
+Найдем $u_1$ и $u_2$ из системы:
+\[
+  \begin{pmatrix} y_1 & y_2 \\ y_1' & y_2' \end{pmatrix}
+  \begin{pmatrix} u_1' \\ u_2' \end{pmatrix}
+  = \begin{pmatrix} 0 \\ f \end{pmatrix}
+  \quad\Longleftrightarrow\quad
+  W\begin{pmatrix} u_1' \\ u_2' \end{pmatrix}
+  = \begin{pmatrix} 0 \\ f \end{pmatrix}
+  \quad\Longleftrightarrow\quad
+  \begin{pmatrix} u_1' \\ u_2' \end{pmatrix} = W^{-1}(x)\begin{pmatrix} 0 \\ f \end{pmatrix}
+\]
+где $W$ -- матрица Вронского, $w = y_1y_2' - y_1'y_2$ -- вронскиан.
+
+Вычисляя обратную матрицу $W^{-1}$, найдем:
+\[
+  \begin{aligned}
+    \begin{pmatrix} u_1' \\ u_2' \end{pmatrix}
+    &= \frac{1}{w}
+       \begin{pmatrix} y_2' & -y_2 \\ -y_1' & y_1 \end{pmatrix}
+       \begin{pmatrix} 0 \\ f \end{pmatrix}\\
+    &\Longleftrightarrow
+      \begin{cases}
+        u_1' = -\dfrac{y_2f}{w},\\
+        u_2' = \dfrac{y_1f}{w}
+      \end{cases}\\
+    &\Longleftrightarrow
+      \begin{cases}
+        u_1 = -\displaystyle\int\frac{y_2f(x)}{w(x)}\,dx,\\
+        u_2 = \displaystyle\int\frac{y_1f(x)}{w(x)}\,dx
+      \end{cases}
+  \end{aligned}
+\]
+
+Подставляя $u_1,u_2$ в общее решение $y$, получим:
+\[
+  \boxed{
+    y = C_1y_1 + C_2y_2
+      - y_1\int\frac{y_2f(x)}{w(x)}\,dx
+      + y_2\int\frac{y_1f(x)}{w(x)}\,dx
+  }.
+\]
+Постоянные интегрирования из $u_1,u_2$ включены в $C_1,C_2$.
+
+
+\subsection*{Полезные интегралы}
+
+\[
+  \int \tgn x\, dx = -\ln|\cos x|\,, \qquad
+  \int \ctgn x\, dx = \ln|\sin x|\,, \qquad
+  \int \frac{dx}{\cos x} = \ln\left|\tgn\left(\frac{x}{2} + \frac{\pi}{4}\right)\right|
+\]
+\[
+  \int \frac{e^{x}\, dx}{e^{x} + 1} = \ln(e^{x} + 1)\,, \qquad
+  \int \frac{dx}{e^{x} + 1} = \int \left(1 - \frac{e^{x}}{e^{x} + 1}\right) dx = x - \ln(e^{x} + 1)
+\]
+
+% =====================================================================
+\section*{Примеры}
+
+\medskip\hrule\medskip
+
+\example{Пример 1}
+
+Найти общее решение уравнения
+\[
+  y'' + y = \frac{1}{\sin x}
+\]
+
+Решение:
+
+\textbf{1.} $\lambda^2 + 1 = 0$, \ $\lambda_{1,2} = \pm i$:
+\[
+  \yoo = C_1\cos x + C_2\sin x\,, \qquad y_1 = \cos x\,, \quad y_2 = \sin x
+\]
+
+\textbf{2.} Вронскиан:
+\[
+  w = \begin{vmatrix} \cos x & \sin x \\ -\sin x & \cos x \end{vmatrix} = \cos^2 x + \sin^2 x = 1
+\]
+
+\textbf{3.} Вычисляем $u_1$ и $u_2$ по формулам через неопределённые интегралы:
+\[
+  \begin{aligned}
+    u_1(x) &= -\int\frac{y_2f}{w}\,dx
+      = -\int\sin x\cdot\frac{1}{\sin x}\,dx = -\int 1\,dx = -x,\\
+    u_2(x) &= \int\frac{y_1f}{w}\,dx
+      = \int\frac{\cos x}{\sin x}\,dx = \ln|\sin x|.
+  \end{aligned}
+\]
+\textbf{4.} Подставляем: $\ych = -x\cos x + \sin x\,\ln|\sin x|$.
+
+Ответ:
+\[
+  y = C_1\cos x + C_2\sin x - x\cos x + \sin x\,\ln|\sin x|
+\]
+
+\example{Задача 1}
+
+Найти общее решение уравнения
+\[
+  y'' + 4y = \frac{1}{\cos 2x}
+\]
+
+Ответ: $y = C_1\cos 2x + C_2\sin 2x + \dfrac14\cos 2x\,\ln|\cos 2x| + \dfrac{x}{2}\sin 2x$.
+
+\medskip\hrule\medskip
+
+\example{Пример 2}
+
+Найти общее решение уравнения
+\[
+  y'' - 2y' + y = \frac{e^{x}}{x}
+\]
+
+Решение:
+
+\textbf{1.} $(\lambda - 1)^2 = 0$, \ $\lambda_1 = \lambda_2 = 1$:
+\[
+  \yoo = (C_1 + C_2 x)\, e^{x}\,, \qquad y_1 = e^{x}\,, \quad y_2 = x e^{x}
+\]
+
+\textbf{2.} Вронскиан:
+\[
+  w = \begin{vmatrix} e^{x} & x e^{x} \\ e^{x} & (1 + x)\, e^{x} \end{vmatrix} = e^{2x}\bigl((1 + x) - x\bigr) = e^{2x}
+\]
+
+\textbf{3.} Вычисляем $u_1$ и $u_2$ по формулам через неопределённые интегралы:
+\[
+  \begin{aligned}
+    u_1(x) &= -\int\frac{y_2f}{w}\,dx
+      = -\int\frac{x e^x\cdot(e^x/x)}{e^{2x}}\,dx = -\int 1\,dx = -x,\\
+    u_2(x) &= \int\frac{y_1f}{w}\,dx
+      = \int\frac{e^x\cdot(e^x/x)}{e^{2x}}\,dx = \int\frac{dx}{x} = \ln|x|.
+  \end{aligned}
+\]
+\textbf{4.} Тогда $\ych = -x e^x + x e^x\ln|x|$.
+Слагаемое $-x e^x$ пропорционально $y_2$, оно входит в $\yoo$. Отбрасываем его.
+
+Ответ:
+\[
+  y = \bigl(C_1 + C_2 x + x\ln|x|\bigr)\, e^{x}
+\]
+
+\example{Задача 2}
+
+Найти общее решение уравнения
+\[
+  y'' + 2y' + y = \frac{e^{-x}}{x^2}
+\]
+
+Ответ: $y = \bigl(C_1 + C_2 x - \ln|x|\bigr)\, e^{-x}$.
+
+\medskip\hrule\medskip
+
+\example{Пример 3}
+
+Найти общее решение уравнения
+\[
+  y'' + 3y' + 2y = \frac{1}{e^{x} + 1}
+\]
+
+Решение:
+
+\textbf{1.} $\lambda^2 + 3\lambda + 2 = 0$, \ $\lambda_1 = -1$, $\lambda_2 = -2$:
+\[
+  \yoo = C_1 e^{-x} + C_2 e^{-2x}\,, \qquad y_1 = e^{-x}\,, \quad y_2 = e^{-2x}
+\]
+
+\textbf{2.} Вронскиан:
+\[
+  w = \begin{vmatrix} e^{-x} & e^{-2x} \\ -e^{-x} & -2e^{-2x} \end{vmatrix} = -2e^{-3x} + e^{-3x} = -e^{-3x}
+\]
+
+\textbf{3.} Вычисляем $u_1$ и $u_2$ по формулам через неопределённые интегралы:
+\[
+  \begin{aligned}
+    u_1(x) &= -\int\frac{y_2f}{w}\,dx
+      = -\int\frac{e^{-2x}}{-e^{-3x}(e^x+1)}\,dx
+      = \int\frac{e^x}{e^x+1}\,dx = \ln(e^x+1),\\
+    u_2(x) &= \int\frac{y_1f}{w}\,dx
+      = \int\frac{e^{-x}}{-e^{-3x}(e^x+1)}\,dx
+      = -\int\frac{e^{2x}}{e^x+1}\,dx.
+  \end{aligned}
+\]
+Для последнего интеграла делаем замену $t=e^x$, $dt=e^x dx$:
+\[
+  u_2(x) = -\int\frac{t}{t+1}\,dt
+    = -\int\left(1-\frac{1}{t+1}\right)dt
+    = -t+\ln(t+1) = -e^x+\ln(e^x+1).
+\]
+
+\textbf{5.} Подставляем:
+\[
+  \ych = e^{-x}\ln(e^{x} + 1) + e^{-2x}\bigl(-e^{x} + \ln(e^{x} + 1)\bigr) = \bigl(e^{-x} + e^{-2x}\bigr)\ln(e^{x} + 1) - e^{-x}
+\]
+Слагаемое $-e^{-x}$ входит в $\yoo$. Отбрасываем его.
+
+Ответ:
+\[
+  y = C_1 e^{-x} + C_2 e^{-2x} + \bigl(e^{-x} + e^{-2x}\bigr)\ln(e^{x} + 1)
+\]
+
+\example{Задача 3}
+
+Найти общее решение уравнения
+\[
+  y'' - 3y' + 2y = \frac{e^{2x}}{e^{x} + 1}
+\]
+
+Ответ: $y = C_1 e^{x} + C_2 e^{2x} + x e^{2x} - \bigl(e^{x} + e^{2x}\bigr)\ln(e^{x} + 1)$.
+
+
+\example{Пример 4}
+
+Найти общее решение уравнения
+\[
+  y'' + 2y' + 2y = \frac{e^{-x}}{\cos x}
+\]
+
+Решение:
+
+\textbf{1.} $\lambda^2 + 2\lambda + 2 = 0$, \ $\lambda_{1,2} = -1 \pm i$:
+\[
+  \yoo = e^{-x}(C_1\cos x + C_2\sin x)\,, \qquad y_1 = e^{-x}\cos x\,, \quad y_2 = e^{-x}\sin x
+\]
+
+\textbf{2.} Производные: $y_1' = -e^{-x}(\cos x + \sin x)$, \ $y_2' = e^{-x}(\cos x - \sin x)$. Вронскиан:
+\[
+  w = \begin{vmatrix} e^{-x}\cos x & e^{-x}\sin x \\ -e^{-x}(\cos x + \sin x) & e^{-x}(\cos x - \sin x) \end{vmatrix}
+  = e^{-2x}\bigl(\cos^2 x + \sin^2 x\bigr) = e^{-2x}
+\]
+
+\textbf{3.} Вычисляем $u_1$ и $u_2$ по формулам через неопределённые интегралы:
+\[
+  \begin{aligned}
+    u_1(x) &= -\int\frac{y_2f}{w}\,dx
+      = -\int\frac{e^{-x}\sin x\cdot(e^{-x}/\cos x)}{e^{-2x}}\,dx
+      = -\int\tgn x\,dx = \ln|\cos x|,\\
+    u_2(x) &= \int\frac{y_1f}{w}\,dx
+      = \int\frac{e^{-x}\cos x\cdot(e^{-x}/\cos x)}{e^{-2x}}\,dx
+      = \int 1\,dx = x.
+  \end{aligned}
+\]
+\textbf{4.} Подставляем:
+\[
+  \ych = e^{-x}\bigl(\cos x\,\ln|\cos x| + x\sin x\bigr)
+\]
+
+Ответ:
+\[
+  y = e^{-x}\bigl(C_1\cos x + C_2\sin x + \cos x\,\ln|\cos x| + x\sin x\bigr)
+\]
+
+\example{Задача 4}
+
+Найти общее решение уравнения
+\[
+  y'' - 2y' + 2y = \frac{e^{x}}{\sin x}
+\]
+
+Ответ: $y = e^{x}\bigl(C_1\cos x + C_2\sin x - x\cos x + \sin x\,\ln|\sin x|\bigr)$.
+
+
+% =====================================================================
+\newpage
+\section*{Решения задач 1--4}
+
+\example{Задача 1}
+
+$y'' + 4y = \dfrac{1}{\cos 2x}$.
+
+\textbf{1.} $\lambda_{1,2} = \pm 2i$: \ $\yoo = C_1\cos 2x + C_2\sin 2x$, \ $y_1 = \cos 2x$, $y_2 = \sin 2x$.
+
+\textbf{2.} $w = \begin{vmatrix} \cos 2x & \sin 2x \\ -2\sin 2x & 2\cos 2x \end{vmatrix} = 2\cos^2 2x + 2\sin^2 2x = 2$.
+
+\textbf{3.} Вычисляем $u_1,u_2$ по формулам через неопределённые интегралы:
+\[
+  \begin{aligned}
+    u_1(x) &= -\int\frac{y_2f}{w}\,dx
+      = -\int\frac{\sin 2x}{2\cos 2x}\,dx
+      = -\frac12\int\tgn 2x\,dx = \frac14\ln|\cos 2x|,\\
+    u_2(x) &= \int\frac{y_1f}{w}\,dx
+      = \int\frac{\cos 2x}{2\cos 2x}\,dx
+      = \frac12\int dx = \frac{x}{2}.
+  \end{aligned}
+\]
+
+Ответ: $y = C_1\cos 2x + C_2\sin 2x + \dfrac14\cos 2x\,\ln|\cos 2x| + \dfrac{x}{2}\sin 2x$.
+
+\example{Задача 2}
+
+$y'' + 2y' + y = \dfrac{e^{-x}}{x^2}$.
+
+\textbf{1.} $\lambda_1 = \lambda_2 = -1$: \ $\yoo = (C_1 + C_2 x)\, e^{-x}$, \ $y_1 = e^{-x}$, $y_2 = x e^{-x}$.
+
+\textbf{2.} $w = \begin{vmatrix} e^{-x} & x e^{-x} \\ -e^{-x} & (1 - x)\, e^{-x} \end{vmatrix} = e^{-2x}\bigl((1 - x) + x\bigr) = e^{-2x}$.
+
+\textbf{3.} Вычисляем $u_1,u_2$ по формулам через неопределённые интегралы:
+\[
+  \begin{aligned}
+    u_1(x) &= -\int\frac{y_2f}{w}\,dx
+      = -\int\frac{xe^{-x}\cdot(e^{-x}/x^2)}{e^{-2x}}\,dx
+      = -\int\frac{dx}{x} = -\ln|x|,\\
+    u_2(x) &= \int\frac{y_1f}{w}\,dx
+      = \int\frac{e^{-x}\cdot(e^{-x}/x^2)}{e^{-2x}}\,dx
+      = \int\frac{dx}{x^2} = -\frac1x.
+  \end{aligned}
+\]
+\textbf{4.} Тогда $\ych = -e^{-x}\ln|x| - e^{-x}$. Слагаемое $-e^{-x}$ входит в $\yoo$.
+
+Ответ: $y = \bigl(C_1 + C_2 x - \ln|x|\bigr)\, e^{-x}$.
+
+\example{Задача 3}
+
+$y'' - 3y' + 2y = \dfrac{e^{2x}}{e^{x} + 1}$.
+
+\textbf{1.} $\lambda_1 = 1$, $\lambda_2 = 2$: \ $\yoo = C_1 e^{x} + C_2 e^{2x}$, \ $y_1 = e^{x}$, $y_2 = e^{2x}$.
+
+\textbf{2.} $w = \begin{vmatrix} e^{x} & e^{2x} \\ e^{x} & 2e^{2x} \end{vmatrix} = 2e^{3x} - e^{3x} = e^{3x}$.
+
+\textbf{3.} Вычисляем $u_1,u_2$ по формулам через неопределённые интегралы:
+\[
+  \begin{aligned}
+    u_1(x) &= -\int\frac{y_2f}{w}\,dx
+      = -\int\frac{e^{2x}\cdot e^{2x}}{e^{3x}(e^x+1)}\,dx
+      = -\int\frac{e^x}{e^x+1}\,dx = -\ln(e^x+1),\\
+    u_2(x) &= \int\frac{y_1f}{w}\,dx
+      = \int\frac{e^x\cdot e^{2x}}{e^{3x}(e^x+1)}\,dx
+      = \int\frac{dx}{e^x+1} = x-\ln(e^x+1).
+  \end{aligned}
+\]
+
+Ответ: $y = C_1 e^{x} + C_2 e^{2x} + x e^{2x} - \bigl(e^{x} + e^{2x}\bigr)\ln(e^{x} + 1)$.
+
+\example{Задача 4}
+
+$y'' - 2y' + 2y = \dfrac{e^{x}}{\sin x}$.
+
+\textbf{1.} $\lambda^2 - 2\lambda + 2 = 0$, \ $\lambda_{1,2} = 1 \pm i$: \ $\yoo = e^{x}(C_1\cos x + C_2\sin x)$, \ $y_1 = e^{x}\cos x$, $y_2 = e^{x}\sin x$.
+
+\textbf{2.} $w = \begin{vmatrix} e^{x}\cos x & e^{x}\sin x \\ e^{x}(\cos x - \sin x) & e^{x}(\cos x + \sin x) \end{vmatrix} = e^{2x}\bigl(\cos^2 x + \sin^2 x\bigr) = e^{2x}$.
+
+\textbf{3.} Вычисляем $u_1,u_2$ по формулам через неопределённые интегралы:
+\[
+  \begin{aligned}
+    u_1(x) &= -\int\frac{y_2f}{w}\,dx
+      = -\int\frac{e^x\sin x\cdot(e^x/\sin x)}{e^{2x}}\,dx = -\int dx = -x,\\
+    u_2(x) &= \int\frac{y_1f}{w}\,dx
+      = \int\frac{e^x\cos x\cdot(e^x/\sin x)}{e^{2x}}\,dx
+      = \int\ctgn x\,dx = \ln|\sin x|.
+  \end{aligned}
+\]
+\textbf{4.} Тогда $\ych = e^x\bigl(-x\cos x + \sin x\,\ln|\sin x|\bigr)$.
+
+Ответ: $y = e^{x}\bigl(C_1\cos x + C_2\sin x - x\cos x + \sin x\,\ln|\sin x|\bigr)$.
+
+% =====================================================================
+\newpage
+\section*{Домашнее задание}
+
+Решить уравнения методом вариации постоянных.
+
+\begin{itemize}[topsep=2pt]
+  \item \textbf{Филиппов № 578}
+  \begin{itemize}
+    \item уравнение: $y'' + 4y = 2\tgn x$
+    \item вычисление функций вариации ($y_1=\cos 2x$, $y_2=\sin 2x$, $w=2$):
+    \[
+      \begin{aligned}
+        u_1(x) &= -\int\frac{y_2f}{w}\,dx
+          = -\int\frac{\sin 2x\cdot 2\tgn x}{2}\,dx
+          = -\int 2\sin^2x\,dx = -x+\frac12\sin 2x,\\
+        u_2(x) &= \int\frac{y_1f}{w}\,dx
+          = \int\frac{\cos 2x\cdot 2\tgn x}{2}\,dx
+          = -\cos^2x+\ln|\cos x|.
+      \end{aligned}
+    \]
+    \item ответ: $y = C_1\cos 2x + C_2\sin 2x + \sin 2x\,\ln|\cos x| - x\cos 2x$
+  \end{itemize}
+  \item \textbf{Филиппов № 579}
+  \begin{itemize}
+    \item уравнение: $y'' + 2y' + y = 3e^{-x}\sqrt{x + 1}$
+    \item вычисление функций вариации ($y_1=e^{-x}$, $y_2=xe^{-x}$, $w=e^{-2x}$):
+    \[
+      \begin{aligned}
+        u_1(x) &= -\int\frac{y_2f}{w}\,dx
+          = -3\int x\sqrt{x+1}\,dx
+          = -\frac65(x+1)^{5/2}+2(x+1)^{3/2},\\
+        u_2(x) &= \int\frac{y_1f}{w}\,dx
+          = 3\int\sqrt{x+1}\,dx
+          = 2(x+1)^{3/2}.
+      \end{aligned}
+    \]
+    \item ответ: $y = e^{-x}\left(\dfrac45 (x + 1)^{5/2} + C_1 + C_2 x\right)$
+  \end{itemize}
+  \item \textbf{Филиппов № 580}
+  \begin{itemize}
+    \item уравнение: $y'' + y = \dfrac{2}{\cos^3 x}$
+    \item вычисление функций вариации ($y_1=\cos x$, $y_2=\sin x$, $w=1$):
+    \[
+      \begin{aligned}
+        u_1(x) &= -\int\frac{y_2f}{w}\,dx
+          = -\int\frac{2\sin x}{\cos^3x}\,dx = -\frac{1}{\cos^2x},\\
+        u_2(x) &= \int\frac{y_1f}{w}\,dx
+          = 2\int\frac{dx}{\cos^2x} = 2\tgn x.
+      \end{aligned}
+    \]
+    \item ответ: $y = C_1\cos x + C_2\sin x - \dfrac{\cos 2x}{\cos x}$
+  \end{itemize}
+  \item \textbf{Краснов № 658}
+  \begin{itemize}
+    \item уравнение: $y'' + 2y' + 2y = \dfrac{1}{e^{x}\sin x}$
+    \item вычисление функций вариации ($y_1=e^{-x}\cos x$, $y_2=e^{-x}\sin x$, $w=e^{-2x}$):
+    \[
+      \begin{aligned}
+        u_1(x) &= -\int\frac{y_2f}{w}\,dx
+          = -\int\frac{e^{-x}\sin x}{e^x\sin x\,e^{-2x}}\,dx = -x,\\
+        u_2(x) &= \int\frac{y_1f}{w}\,dx
+          = \int\frac{e^{-x}\cos x}{e^x\sin x\,e^{-2x}}\,dx
+          = \int\ctgn x\,dx = \ln|\sin x|.
+      \end{aligned}
+    \]
+    \item ответ: $y = (C_1 - x)\, e^{-x}\cos x + (C_2 + \ln|\sin x|)\, e^{-x}\sin x$
+  \end{itemize}
+\end{itemize}
+
+%--------------------------------
+\end{document}
+
+% =====================================================================
+
+\section*{Дополнительные примеры}
+
+\example{Пример Д1 (задача Коши)}
+
+Решить задачу Коши:
+\[
+  y'' + y = \frac{1}{\cos x}\,, \qquad y(0) = 1\,, \quad y'(0) = 0
+\]
+
+Решение:
+
+\textbf{1.} $\lambda_{1,2} = \pm i$, \ $y_1 = \cos x$, $y_2 = \sin x$, \ $w = 1$.
+
+\textbf{2.} По формулам вариации вычисляем:
+\[
+  \begin{aligned}
+    u_1(x) &= -\int\frac{y_2f}{w}\,dx
+      = -\int\frac{\sin x}{\cos x}\,dx = \ln|\cos x|,\\
+    u_2(x) &= \int\frac{y_1f}{w}\,dx
+      = \int\frac{\cos x}{\cos x}\,dx = x.
+  \end{aligned}
+\]
+
+\textbf{3.} Общее решение на интервале $\left(-\frac{\pi}{2}, \frac{\pi}{2}\right)$, где $\cos x > 0$:
+\[
+  y = C_1\cos x + C_2\sin x + \cos x\,\ln\cos x + x\sin x
+\]
+
+\textbf{4.} Производная:
+\[
+  y' = -C_1\sin x + C_2\cos x - \sin x\,\ln\cos x + x\cos x
+\]
+Начальные условия: $y(0) = C_1 = 1$, \ $y'(0) = C_2 = 0$.
+
+Ответ:
+\[
+  y = \cos x + \cos x\,\ln\cos x + x\sin x
+\]
+
+\example{Пример Д2 (третий порядок)}
+
+Найти общее решение уравнения
+\[
+  y''' + y' = \frac{1}{\cos x}
+\]
+
+Решение:
+
+\textbf{1.} $\lambda^3 + \lambda = \lambda(\lambda^2 + 1) = 0$: \ $\lambda_1 = 0$, \ $\lambda_{2,3} = \pm i$. ФСР: $y_1 = 1$, $y_2 = \cos x$, $y_3 = \sin x$.
+
+\textbf{2.} Для порядка $n$ система строится так же: в первых $n - 1$ строках нули, в последней $f$:
+\[
+  \begin{cases}
+    u_1' + u_2'\cos x + C_3'\sin x = 0\\
+    -u_2'\sin x + C_3'\cos x = 0\\
+    -u_2'\cos x - C_3'\sin x = \dfrac{1}{\cos x}
+  \end{cases}
+\]
+
+\textbf{3.} Складываем первую и третью строки: $u_1' = \dfrac{1}{\cos x}$. Из второй строки $C_3' = u_2'\tgn x$. Подставляем в третью:
+\[
+  -u_2'\left(\cos x + \frac{\sin^2 x}{\cos x}\right) = -\frac{u_2'}{\cos x} = \frac{1}{\cos x}
+  \quad\Rightarrow\quad
+  u_2' = -1\,, \quad C_3' = -\tgn x
+\]
+
+\textbf{4.} Интегрируем найденные производные коэффициентов:
+\[
+  \begin{aligned}
+    u_1(x) &= \int u_1'(x)\,dx = \int\frac{dx}{\cos x}
+      = \ln\left|\tgn\left(\frac{x}{2}+\frac{\pi}{4}\right)\right|,\\
+    u_2(x) &= \int u_2'(x)\,dx = -\int dx = -x,\\
+    C_3(x) &= \int C_3'(x)\,dx = -\int\tgn x\,dx = \ln|\cos x|.
+  \end{aligned}
+\]
+
+Ответ:
+\[
+  y = C_1 + C_2\cos x + C_3\sin x + \ln\left|\tgn\left(\frac{x}{2} + \frac{\pi}{4}\right)\right| - x\cos x + \sin x\,\ln|\cos x|
+\]
+
+\example{Пример Д3 (коэффициент при $y''$ не равен 1)}
+
+Найти общее решение уравнения
+\[
+  4y'' + y = \frac{1}{\cos\frac{x}{2}}
+\]
+
+Решение:
+
+\textbf{1.} $4\lambda^2 + 1 = 0$, \ $\lambda_{1,2} = \pm\dfrac{i}{2}$:
+\[
+  \yoo = C_1\cos\frac{x}{2} + C_2\sin\frac{x}{2}\,, \qquad y_1 = \cos\frac{x}{2}\,, \quad y_2 = \sin\frac{x}{2}
+\]
+
+\textbf{2.} Делим уравнение на $4$, чтобы коэффициент при $y''$ стал равен $1$:
+\[
+  y'' + \frac{y}{4} = \frac{1}{4\cos\frac{x}{2}}\,, \qquad f = \frac{1}{4\cos\frac{x}{2}}
+\]
+
+\textbf{3.} Вронскиан:
+\[
+  w = \begin{vmatrix} \cos\frac{x}{2} & \sin\frac{x}{2} \\[2pt] -\frac12\sin\frac{x}{2} & \frac12\cos\frac{x}{2} \end{vmatrix}
+  = \frac12\cos^2\frac{x}{2} + \frac12\sin^2\frac{x}{2} = \frac12
+\]
+
+\textbf{4.} Вычисляем функции по формулам через неопределённые интегралы:
+\[
+  \begin{aligned}
+    u_1(x) &= -\int\frac{y_2f}{w}\,dx
+      = -\int\frac{\sin\frac{x}{2}}{4\cos\frac{x}{2}}\cdot 2\,dx
+      = -\frac12\int\tgn\frac{x}{2}\,dx
+      = \ln\left|\cos\frac{x}{2}\right|,\\
+    u_2(x) &= \int\frac{y_1f}{w}\,dx
+      = \int\frac{\cos\frac{x}{2}}{4\cos\frac{x}{2}}\cdot 2\,dx
+      = \frac12\int dx = \frac{x}{2}.
+  \end{aligned}
+\]
+
+Ответ:
+\[
+  y = C_1\cos\frac{x}{2} + C_2\sin\frac{x}{2} + \cos\frac{x}{2}\,\ln\left|\cos\frac{x}{2}\right| + \frac{x}{2}\sin\frac{x}{2}
+\]
+
+\example{Пример Д4 (подбор и вариация вместе)}
+
+Найти общее решение уравнения
+\[
+  y'' + 2y' + y = x e^{x} + \frac{1}{x e^{x}}
+\]
+
+Решение:
+
+\textbf{1.} $\lambda_1 = \lambda_2 = -1$: \ $\yoo = (C_1 + C_2 x)\, e^{-x}$.
+
+\textbf{2.} По принципу суперпозиции $\ych = z_1 + z_2$, где $z_1$ отвечает правой части $x e^{x}$, а $z_2$ "--- правой части $\dfrac{e^{-x}}{x}$.
+
+\textbf{3.} Для $x e^{x}$ работает подбор: $\lambda = 1$ не корень, $k = 0$, \ $z_1 = u\, e^{x}$, \ $u = Ax + B$:
+\[
+  \bigl((u'' + 2u' + u) + 2(u' + u) + u\bigr)\, e^{x} = (u'' + 4u' + 4u)\, e^{x} = (4Ax + 4A + 4B)\, e^{x} = x e^{x}
+\]
+\[
+  A = \frac14\,, \quad B = -\frac14\,, \qquad z_1 = \frac{x - 1}{4}\, e^{x}
+\]
+
+\textbf{4.} Для правой части $\dfrac{e^{-x}}{x}$ вычисляем функции вариации по формулам через неопределённые интегралы ($y_1=e^{-x}$, $y_2=xe^{-x}$, $w=e^{-2x}$):
+\[
+  \begin{aligned}
+    u_1(x) &= -\int\frac{y_2f}{w}\,dx
+      = -\int\frac{xe^{-x}\cdot(e^{-x}/x)}{e^{-2x}}\,dx = -\int dx = -x,\\
+    u_2(x) &= \int\frac{y_1f}{w}\,dx
+      = \int\frac{e^{-x}\cdot(e^{-x}/x)}{e^{-2x}}\,dx
+      = \int\frac{dx}{x} = \ln|x|.
+  \end{aligned}
+\]
+$z_2 = u_1y_1 + u_2y_2 = -x e^{-x} + x e^{-x}\ln|x|$. Слагаемое $-x e^{-x}$ входит в $\yoo$.
+
+Ответ:
+\[
+  y = \bigl(C_1 + C_2 x + x\ln|x|\bigr)\, e^{-x} + \frac{x - 1}{4}\, e^{x}
+\]
+
